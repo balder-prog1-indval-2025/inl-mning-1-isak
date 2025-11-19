@@ -1,36 +1,141 @@
-# balderjs-template
+# P5.js-vite Starter Template 🚀
 
-## Run
-`npm install`  
-`npx balderjs`
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-## Inlämning
-I den här uppgiften får du göra valfritt större program. Det finns exempel nedan på några olika spel om du inte har någon egen idé. Diskutera med mig om du är osäker.
+[Vite](https://vitejs.dev/) starter template to scaffold a new [p5.js](https://p5js.org) project.
 
-Det är viktigt att ditt program innehåller if-satser, loopar, arrayer (eller andra datastrukturer) och funktioner. Med fördel använder ni också grafiska funktioner och/eller update-funktionen i balderjs. Då kan ni få lite roligare program än om ni bara använder read och write.
+This is an unopinionated template; aside from P5.js and Vite, the rest of your project's tools are entirely up to you.
 
-Den här är en betygsgrundande uppgift och förutom att lämna in behöver du diskutera med och förklara för mig både under arbetets gång och efter du är klar.
+## Live demo
 
-Jag kommer ge tips och gå igenom hur ni kan planera och strukturera större uppgifter.
+For a live demo please [visit this page](https://p5js-vite-demo.surge.sh).
 
-Om man vill kan man jobba i grupp, 2 eller möjligtvis 3 personer. 
+## Installation
 
-## Exempel
+Pull the template files with [degit](https://github.com/Rich-Harris/degit) and install dependencies.
 
-### Grid-spel
-Vissa av er kanske testade grid-spelen när jag skapade dem som fördjupningsuppgifter. Jag lägger en kopia av det här:
+```
+npx degit makinteract/p5js-vite my-project
 
-Använd grid-objektet (exempel finns i BalderJS-API:et) för att skapa något (eller några) av följande spel:
+cd my-project
+npm install
+npm run dev
+```
 
-- [Luffarschack](https://sv.wikipedia.org/wiki/Luffarschack)
-- [Schack](https://sv.wikipedia.org/wiki/Schack)
-- [Röj](https://sv.wikipedia.org/wiki/MS_R%C3%B6j)
-- [Sudoku](https://sv.wikipedia.org/wiki/Sudoku)
-- [Game of Life](https://sv.wikipedia.org/wiki/Game_of_Life)
-- [Tetris](https://sv.wikipedia.org/wiki/Tetris)
+## npm scripts
 
-### Kortspel
-Välj ett valfritt kortspel, t.ex. poker eller blackjack. Du kan börja med att bara skriva ut korten med write, men sikta på att lägga in bilder på kort som spelet kan dela ut.
+- `npm run dev` - Starts the development server at port [3000](http://localhost:3000/)
+- `npm run build` - Builds the application in a `dist` folder
+- `npm run preview` - Serves the build files (`dist` folder) locally at port [5000](http://localhost:3000/)
 
-### Plattformsspel
-Med update-funktionen, hitboxes och sprite som finns i balderjs kan man göra ett plattformsspel. Börja med att göra en karaktär som kan stå "på marken" och sedan hoppa och landa på marken igen.
+Note that if after this last command you do not see anything, you can use instead this other command:
+
+- `npm run preview --host` - You should then be able to see your files locally at port [5000](http://localhost:3000/)
+
+## A single p5.js sketch
+
+```js
+import '../css/style.css';
+import { sketch } from 'p5js-wrapper';
+
+sketch.setup = function () {
+  createCanvas(800, 600);
+};
+
+sketch.draw = function () {
+  background(127); // grey
+  fill(255, 0, 0); // red
+  noStroke();
+  rectMode(CENTER);
+  rect(width / 2, height / 2, 50, 50);
+};
+
+sketch.mousePressed = function () {
+  console.log(`I am here at ${mouseX}:${mouseY}`);
+};
+```
+
+And here the body of the html file:
+
+```html
+<body>
+  <script type="module" src="/src/single_sketch.js"></script>
+</body>
+```
+
+## Multiple p5.js sketches
+
+If you want to use multiple sketches, you need to use a different syntax.
+
+```js
+import '../css/style.css';
+import { p5 } from 'p5js-wrapper';
+
+let sketch1 = new p5((p) => {
+  p.setup = () => {
+    const one = document.getElementById('one');
+    p.createCanvas(one.clientWidth, one.clientHeight);
+  };
+
+  p.draw = () => {
+    p.background(100);
+  };
+}, 'one');
+
+// Sketch2
+let sketch2 = new p5((p) => {
+  p.setup = () => {
+    const two = document.getElementById('two');
+    p.createCanvas(two.clientWidth, two.clientHeight);
+  };
+
+  p.draw = () => {
+    p.background(170);
+  };
+}, 'two');
+```
+
+This file is expecting two divs in the html file:
+
+```html
+<body>
+  <script type="module" src="/src/multi_sketch.js"></script>
+  <div id="one"></div>
+  <div id="two"></div>
+</body>
+```
+
+## Adding sound
+
+Sound is an [experimental feature](https://github.com/makinteract/p5js-wrapper/blob/main/README_SOUND.md).
+
+Examples usage:
+
+```js
+import { sketch } from 'p5js-wrapper';
+import 'p5js-wrapper/sound';
+
+import mysound from './mysound.mp3';
+
+let soundEffect;
+
+sketch.setup = function () {
+  createCanvas(100, 100);
+  soundEffect = loadSound(mysound);
+};
+
+sketch.draw = function () {
+  background('#eeeeee');
+};
+
+// Play sound on click
+sketch.mousePressed = function () {
+  soundEffect.play();
+};
+```
+
+This example assumes you have a file _mysound.mp3_ in the _src_ folder.
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
