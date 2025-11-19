@@ -1,18 +1,26 @@
 import "../css/style.css";
 import { sketch } from "p5js-wrapper";
+import HitBox from "./Box";
+import Block from "./Block";
+import Player from "./Player";
 
-sketch.setup = function () {
+let blobbe;
+let ground;
+
+let player;
+
+sketch.setup = () => {
   createCanvas(800, 600);
+  blobbe = new Block(200, 200, 200, 50);
+  blobbe.setColor(100, 100, 2);
+  ground = new Block(0, height - 100, width, 100, 150, 200, 0);
+
+  player = new Player(200, 200, 50, 50);
 };
 
-sketch.draw = function () {
-  background(100);
-  fill(255, 0, 0);
-  noStroke();
-  rectMode(CENTER);
-  rect(mouseX, mouseY, 50, 50);
-};
-
-sketch.mousePressed = function () {
-  console.log("here");
+sketch.draw = () => {
+  background(0, 100, 200);
+  ground.draw();
+  blobbe.draw();
+  player.draw();
 };
