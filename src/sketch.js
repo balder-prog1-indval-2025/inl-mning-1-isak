@@ -24,6 +24,7 @@ sketch.draw = () => {
   deltaTime = millis() - lastTime;
 
   background(0, 100, 200);
+  noStroke();
 
   player.update(deltaTime, ground);
 
