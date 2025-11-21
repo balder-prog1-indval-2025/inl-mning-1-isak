@@ -23,6 +23,9 @@ export default class Entity {
       this.sprite = sprite;
       this.textured = true;
     }
+
+    this.grounded = false;
+    this.ground_y = 0;
   }
 
   setColor(r, g, b) {
