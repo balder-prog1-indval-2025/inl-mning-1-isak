@@ -1,5 +1,5 @@
 export default class HitBox {
-  constructor(x_origin, y_origin, x_off, y_off, width, height, sprite = null) {
+  constructor(x_origin, y_origin, x_off, y_off, width, height) {
     this.xorg = x_origin;
     this.yorg = y_origin;
     this.x_off = x_off;
@@ -10,12 +10,6 @@ export default class HitBox {
     this.h = height;
 
     this.debug_mode = false;
-
-    this.textured = false;
-    if (sprite != null) {
-      this.sprite = sprite;
-      this.textured = true;
-    }
   }
 
   moveTo(x, y) {

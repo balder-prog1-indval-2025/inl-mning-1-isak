@@ -1,5 +1,5 @@
 export default class Entity {
-  constructor(x, y, w, h) {
+  constructor(x, y, w, h, sprite = null) {
     this.x = x;
     this.y = y;
     this.w = w;
@@ -13,6 +13,12 @@ export default class Entity {
     this.x_vel = 0;
 
     this.hitbox = new HitBox(x, y, 0, 0, w, h);
+
+    this.textured = false;
+    if (sprite != null) {
+      this.sprite = sprite;
+      this.textured = true;
+    }
   }
 
   setColor(r, g, b) {
