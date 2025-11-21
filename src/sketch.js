@@ -12,7 +12,7 @@ let deltaTime = 5;
 let lastTime;
 
 sketch.setup = () => {
-  createCanvas(800, 600);
+  createCanvas(700, 500);
   ground = new Block(0, height - 100, width, 100, 150, 200, 0);
 
   player = new Player(100, 100, 50, 50);
