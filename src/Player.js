@@ -20,7 +20,14 @@ export default class Player extends Entity {
       this.target_x_vel = 0;
     }
     this.x_vel = lerp(this.x_vel, this.target_x_vel, 0.1);
-
+    if (this.x < 0) {
+      this.x_vel = 0;
+      this.x = 0;
+    }
+    if (this.x > width - this.w) {
+      this.x_vel = 0;
+      this.x = width - this.w;
+    }
     this.x += this.x_vel * dT;
 
     console.log(this.grounded);
