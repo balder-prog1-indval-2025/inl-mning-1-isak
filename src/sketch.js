@@ -13,7 +13,7 @@ let lastTime;
 
 sketch.setup = () => {
   createCanvas(700, 500);
-  ground = new Block(0, height - 100, width, 100, 150, 200, 0);
+  ground = new Block(-100, height - 100, width + 200, 100, 150, 200, 0);
 
   player = new Player(100, 100, 30, 40);
   player.setColor(255, 0, 0);
@@ -28,8 +28,8 @@ sketch.draw = () => {
 
   player.update(deltaTime, ground);
 
-  ground.draw();
   player.draw();
+  ground.draw();
 
   lastTime = millis();
 };

@@ -26,6 +26,7 @@ export default class Entity {
 
     this.grounded = false;
     this.ground_y = 0;
+    this.dir = 1;
   }
 
   setColor(r, g, b) {
@@ -36,6 +37,6 @@ export default class Entity {
 
   draw() {
     fill(this.r, this.g, this.b);
-    rect(this.x, this.y, this.w, this.h);
+    rect(this.x, this.y, this.w, this.h - 1);
   }
 }

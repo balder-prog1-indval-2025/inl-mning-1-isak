@@ -12,9 +12,13 @@ export default class Player extends Entity {
 
     if (keyIsDown(65)) {
       this.target_x_vel = -this.x_movement_speed;
+      if (this.x_vel > 0) this.dir = 1;
+      if (this.x_vel < 0) this.dir = -1;
     }
     if (keyIsDown(68)) {
       this.target_x_vel = this.x_movement_speed;
+      if (this.x_vel > 0) this.dir = 1;
+      if (this.x_vel < 0) this.dir = -1;
     }
     if (!(keyIsDown(65) || keyIsDown(68))) {
       this.target_x_vel = 0;
@@ -23,7 +27,7 @@ export default class Player extends Entity {
 
     this.x += this.x_vel * dT;
 
-    console.log(this.grounded);
+    //console.log(this.grounded);
 
     if (this.hitbox.intersectsWith(ground.hitbox)) {
       //console.log("t");
@@ -40,7 +44,7 @@ export default class Player extends Entity {
       this.y_vel = -this.jump_power;
       this.y = this.ground_y;
       this.grounded = false;
-      console.log("skutt");
+      //console.log("skutt");
     }
 
     this.hitbox.moveTo(this.x, this.y);
