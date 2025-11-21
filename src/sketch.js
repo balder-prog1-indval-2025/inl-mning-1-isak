@@ -18,7 +18,7 @@ sketch.setup = () => {
   blobbe.setColor(100, 100, 2);
   ground = new Block(0, height - 100, width, 100, 150, 200, 0);
 
-  player = new Player(100, 300, 50, 50);
+  player = new Player(100, 100, 50, 50);
   player.setColor(255, 0, 0);
   lastTime = millis();
 };

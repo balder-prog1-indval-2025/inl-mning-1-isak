@@ -14,6 +14,8 @@ export default class Entity {
     this.y_vel = 0;
     this.x_vel = 0;
 
+    this.x_movement_speed = 0.3;
+
     this.hitbox = new HitBox(x, y, 0, 0, w, h);
 
     this.textured = false;
