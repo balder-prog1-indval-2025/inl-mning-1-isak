@@ -27,10 +27,12 @@ sketch.draw = () => {
   deltaTime = millis() - lastTime;
 
   background(0, 100, 200);
+
+  player.update(deltaTime, ground);
+
   ground.draw();
   blobbe.draw();
   player.draw();
 
-  player.update(deltaTime, ground);
   lastTime = millis();
 };

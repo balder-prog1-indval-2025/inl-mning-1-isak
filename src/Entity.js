@@ -1,3 +1,5 @@
+import HitBox from "./Box";
+
 export default class Entity {
   constructor(x, y, w, h, sprite = null) {
     this.x = x;

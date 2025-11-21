@@ -1,4 +1,3 @@
-import HitBox from "./Box";
 import Entity from "./Entity";
 
 export default class Player extends Entity {
@@ -12,9 +11,10 @@ export default class Player extends Entity {
     if (this.hitbox.intersectsWith(ground.hitbox)) {
       this.y_vel = 0;
       this.y = ground.y - this.h;
+    } else {
+      this.y += this.y_vel * dT;
     }
 
-    this.y += this.y_vel * dT;
     this.hitbox.moveTo(this.x, this.y);
   }
 }
