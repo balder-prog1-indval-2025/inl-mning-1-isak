@@ -4,20 +4,22 @@ export default class Player extends Entity {
   constructor(x, y, w, h, sprite = null) {
     super(x, y, w, h, sprite);
     this.jump_power = 0.67;
+    this.target_x_vel = 0;
   }
 
   update(dT, ground) {
     this.y_vel += this.gravid;
 
     if (keyIsDown(65)) {
-      this.x_vel = -this.x_movement_speed;
+      this.target_x_vel = -this.x_movement_speed;
     }
     if (keyIsDown(68)) {
-      this.x_vel = this.x_movement_speed;
+      this.target_x_vel = this.x_movement_speed;
     }
     if (!(keyIsDown(65) || keyIsDown(68))) {
-      this.x_vel = 0;
+      this.target_x_vel = 0;
     }
+    this.x_vel = lerp(this.x_vel, this.target_x_vel, 0.1);
 
     this.x += this.x_vel * dT;
 
