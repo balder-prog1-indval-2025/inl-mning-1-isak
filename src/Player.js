@@ -23,6 +23,7 @@ export default class Player extends Entity {
     if (!(keyIsDown(65) || keyIsDown(68))) {
       this.target_x_vel = 0;
     }
+
     this.x_vel = lerp(this.x_vel, this.target_x_vel, 0.1);
     if (this.x < 0) {
       this.x_vel = 0;
