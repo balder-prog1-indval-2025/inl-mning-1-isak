@@ -11,6 +11,7 @@ export default class Bullet extends Entity {
     this.as = 0.4;
     this.dir = dir;
     this.speed = start_speed + this.as;
+    this.dead = false;
   }
 
   update(dT) {
@@ -20,6 +21,8 @@ export default class Bullet extends Entity {
   }
 
   outOfBounds() {
-    return this.x < -this.width * 2 || this.x > width + this.width * 2;
+    return (
+      this.x < -this.width * 2 || this.x > width + this.width * 2 || this.dead
+    );
   }
 }
