@@ -4,10 +4,12 @@ import HitBox from "./Box";
 import Block from "./Block";
 import Player from "./Player";
 import Bullet from "./Bullet";
+import Zombie from "./Zombie";
 
 let ground;
-let bullets = [];
 let player;
+let bullets = [];
+let zombies = [];
 
 let deltaTime = 5;
 let lastTime;
@@ -18,6 +20,8 @@ sketch.setup = () => {
 
   player = new Player(100, 100, 30, 40);
   player.setColor(255, 0, 0);
+
+  zombies.push(new Zombie(400, height - 150, 10, 50));
 
   lastTime = millis();
 };
@@ -37,7 +41,14 @@ sketch.draw = () => {
 
   bullets = bullets.filter((bullet) => !bullet.outOfBounds());
 
+  for (let zombie of zombies) {
+    zombie.update(deltaTime, bullets);
+    zombie.draw();
+  }
+  zombies = zombies.filter((zombie) => !zombie.dead);
+
   player.draw();
+
   ground.draw();
 
   lastTime = millis();

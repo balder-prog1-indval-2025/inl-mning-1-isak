@@ -8,7 +8,6 @@ export default class Zombie extends Entity {
     this.dead = false;
   }
   update(dT, bullets) {
-    this.x_vel = this.dir * this.x_movement_speed * dT;
     if (this.x > width - this.w) {
       this.dir = -this.dir;
       this.x = width - this.w;
@@ -22,6 +21,7 @@ export default class Zombie extends Entity {
         this.dead = true;
       }
     }
+    this.x_vel = this.dir * this.x_movement_speed * dT;
 
     this.x += this.x_vel;
   }
