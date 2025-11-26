@@ -7,8 +7,19 @@ export default class Zombie extends Entity {
     this.dir = round(random(0, 1)) * 2 - 1;
     this.dead = false;
     this.hp = round(random(1, 3));
+    this.spawning = true;
   }
   update(dT, bullets) {
+    if (this.spawning) {
+      this.x_vel = this.dir * this.x_movement_speed * dT;
+      this.x += this.x_vel;
+      if (this.dir == 1 && this.x > 10) {
+        this.spawning = false;
+      } else if (this.dir == -1 && this.x < width - this.w - 10) {
+        this.spawning = false;
+      }
+      return;
+    }
     if (this.x > width - this.w) {
       this.dir = -this.dir;
       this.x = width - this.w;

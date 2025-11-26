@@ -16,15 +16,23 @@ let zombies = [];
 let deltaTime = 5;
 let lastTime;
 
+function addZombie() {
+  zombies.push(new Zombie(-1000, height - 150, 30, 50));
+  if (zombies[zombies.length - 1].dir == 1) {
+    zombies[zombies.length - 1].x = -200;
+  } else if (zombies[zombies.length - 1].dir == -1) {
+    zombies[zombies.length - 1].x = width + 200 + zombies[zombies.length - 1].w;
+  }
+}
+
 sketch.setup = () => {
   createCanvas(700, 500);
   background = new Background();
   ground = new Block(-100, height - 100, width + 200, 100, 150, 200, 0);
 
   player = new Player(100, 100, 30, 40);
+  addZombie();
   player.setColor(255, 0, 0);
-
-  zombies.push(new Zombie(400, height - 150, 10, 50));
 
   lastTime = millis();
 };
