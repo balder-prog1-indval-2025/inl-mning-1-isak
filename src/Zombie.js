@@ -24,5 +24,6 @@ export default class Zombie extends Entity {
     this.x_vel = this.dir * this.x_movement_speed * dT;
 
     this.x += this.x_vel;
+    this.hitbox.moveTo(this.x, this.y);
   }
 }
