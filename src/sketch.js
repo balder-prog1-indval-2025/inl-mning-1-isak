@@ -3,10 +3,11 @@ import { sketch } from "p5js-wrapper";
 import HitBox from "./Box";
 import Block from "./Block";
 import Player from "./Player";
+import Bullet from "./Bullet";
 import Background from "./Background";
 
 let ground;
-let background;
+let bullets = [];let background;
 let player;
 
 let deltaTime = 5;
@@ -19,6 +20,7 @@ sketch.setup = () => {
 
   player = new Player(100, 100, 30, 40);
   player.setColor(255, 0, 0);
+
   lastTime = millis();
 };
 
@@ -31,8 +33,23 @@ sketch.draw = () => {
 
   player.update(deltaTime, ground);
 
+  for (let bullet of bullets) {
+    bullet.update(deltaTime);
+    bullet.draw();
+  }
+
+  bullets = bullets.filter((bullet) => !bullet.outOfBounds());
+
   player.draw();
   ground.draw();
 
   lastTime = millis();
+};
+
+sketch.keyPressed = () => {
+  if (key == "w") {
+    let launch_x = player.x + player.w / 2;
+    let launch_y = player.y + player.h / 3;
+    bullets.push(new Bullet(launch_x, launch_y, player.dir, abs(player.x_vel)));
+  }
 };
