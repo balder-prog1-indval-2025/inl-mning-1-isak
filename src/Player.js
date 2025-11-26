@@ -5,9 +5,10 @@ export default class Player extends Entity {
     super(x, y, w, h, sprite);
     this.jump_power = 0.67;
     this.target_x_vel = 0;
+    this.hp = 10;
   }
 
-  update(dT, ground) {
+  update(dT, ground, zombies) {
     this.y_vel += this.gravid;
 
     if (keyIsDown(65)) {
@@ -53,6 +54,16 @@ export default class Player extends Entity {
       this.y = this.ground_y;
       this.grounded = false;
       //console.log("skutt");
+    }
+    for (let zombie of zombies) {
+      if (zombie.hitbox.intersectsWith(this.hitbox)) {
+        this.hp--;
+        if (this.x < zombie.x) {
+          this.x = zombie.x - this.w - 1;
+        } else if (this.x > zombie.x) {
+          this.x = zombie.x + zombie.w + 1;
+        }
+      }
     }
 
     this.hitbox.moveTo(this.x, this.y);

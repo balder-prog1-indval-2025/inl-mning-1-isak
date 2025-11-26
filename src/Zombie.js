@@ -9,7 +9,7 @@ export default class Zombie extends Entity {
     this.hp = round(random(1, 3));
     this.spawning = true;
   }
-  update(dT, bullets) {
+  update(dT, bullets, player) {
     if (this.spawning) {
       this.x_vel = this.dir * this.x_movement_speed * dT;
       this.x += this.x_vel;
@@ -33,6 +33,10 @@ export default class Zombie extends Entity {
         this.hp--;
         bullet.dead = true;
       }
+    }
+
+    if (this.hitbox.intersectsWith(player.hitbox)) {
+      this.dir = -this.dir;
     }
     this.dead = this.hp <= 0;
     this.x_vel = this.dir * this.x_movement_speed * dT;

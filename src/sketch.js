@@ -17,7 +17,7 @@ let deltaTime = 5;
 let lastTime;
 
 function addZombie() {
-  zombies.push(new Zombie(-1000, height - 150, 30, 50));
+  zombies.push(new Zombie(-1000, height - 149, 30, 50));
   if (zombies[zombies.length - 1].dir == 1) {
     zombies[zombies.length - 1].x = -200;
   } else if (zombies[zombies.length - 1].dir == -1) {
@@ -44,7 +44,7 @@ sketch.draw = () => {
 
   noStroke();
 
-  player.update(deltaTime, ground);
+  player.update(deltaTime, ground, zombies);
 
   for (let bullet of bullets) {
     bullet.update(deltaTime);
@@ -54,7 +54,7 @@ sketch.draw = () => {
   bullets = bullets.filter((bullet) => !bullet.outOfBounds());
 
   for (let zombie of zombies) {
-    zombie.update(deltaTime, bullets);
+    zombie.update(deltaTime, bullets, player);
     zombie.draw();
   }
   zombies = zombies.filter((zombie) => !zombie.dead);
