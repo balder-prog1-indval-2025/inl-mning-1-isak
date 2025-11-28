@@ -6,6 +6,8 @@ export default class Player extends Entity {
     this.jump_power = 0.67;
     this.target_x_vel = 0;
     this.hp = 10;
+    this.game_over = false;
+    this.hit = false;
   }
 
   update(dT, ground, zombies) {
@@ -55,16 +57,29 @@ export default class Player extends Entity {
       this.grounded = false;
       //console.log("skutt");
     }
+    this.hit = false;
     for (let zombie of zombies) {
       if (zombie.hitbox.intersectsWith(this.hitbox)) {
-        this.hp--;
-        if (this.x < zombie.x) {
-          this.x = zombie.x - this.w - 1;
-        } else if (this.x > zombie.x) {
-          this.x = zombie.x + zombie.w + 1;
+        console.log(this.hp);
+        if (this.x < zombie.x && this.x_vel >= 0) {
+          zombie.x = this.hitbox.x + this.w + 8;
+        } else if (this.x < zombie.x && this.x_vel < 0) {
+          this.target_x_vel = -this.x_movement_speed;
+          this.x += this.x_vel * dT;
         }
+        if (this.x > zombie.x && this.x_vel <= 0) {
+          zombie.x = this.hitbox.x - zombie.w - 8;
+        } else if (this.x > zombie.x && this.x_vel > 0) {
+          this.target_x_vel = this.x_movement_speed;
+          this.x += this.x_vel * dT;
+        }
+        this.hit = true;
+        zombie.dir = -zombie.dir;
+        //console.log(zombie.dir);
       }
     }
+    if (this.hit) this.hp--;
+    this.game_over = this.hp <= 0;
 
     this.hitbox.moveTo(this.x, this.y);
   }

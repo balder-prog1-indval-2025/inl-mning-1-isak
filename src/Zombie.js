@@ -35,11 +35,8 @@ export default class Zombie extends Entity {
       }
     }
 
-    if (this.hitbox.intersectsWith(player.hitbox)) {
-      this.dir = -this.dir;
-    }
     this.dead = this.hp <= 0;
-    this.x_vel = this.dir * this.x_movement_speed * dT;
+    this.x_vel = lerp(this.x_vel, this.dir * this.x_movement_speed * dT, 0.1);
 
     this.x += this.x_vel;
     this.hitbox.moveTo(this.x, this.y);
