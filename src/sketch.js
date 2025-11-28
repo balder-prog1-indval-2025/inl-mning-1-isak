@@ -40,7 +40,7 @@ sketch.setup = () => {
 sketch.draw = () => {
   deltaTime = millis() - lastTime;
 
-  background.draw();
+  background.draw(deltaTime);
 
   noStroke();
 
