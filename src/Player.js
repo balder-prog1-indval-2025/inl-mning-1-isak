@@ -61,18 +61,16 @@ export default class Player extends Entity {
     for (let zombie of zombies) {
       if (zombie.hitbox.intersectsWith(this.hitbox)) {
         console.log(this.hp);
-        if (this.x < zombie.x && this.x_vel >= 0) {
+        if (this.x < zombie.x) {
+          this.x = zombie.x - this.w;
           zombie.x = this.hitbox.x + this.w + 8;
-        } else if (this.x < zombie.x && this.x_vel < 0) {
-          this.target_x_vel = -this.x_movement_speed;
-          this.x += this.x_vel * dT;
         }
-        if (this.x > zombie.x && this.x_vel <= 0) {
+
+        if (this.x > zombie.x) {
+          this.x = zombie.x + zombie.w;
           zombie.x = this.hitbox.x - zombie.w - 8;
-        } else if (this.x > zombie.x && this.x_vel > 0) {
-          this.target_x_vel = this.x_movement_speed;
-          this.x += this.x_vel * dT;
         }
+
         this.hit = true;
         zombie.dir = -zombie.dir;
         //console.log(zombie.dir);
