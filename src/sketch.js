@@ -14,6 +14,7 @@ let background;
 let zombies = [];
 
 let deltaTime = 5;
+let spawndelay = 5000;
 let lastTime;
 
 function addZombie() {
@@ -44,8 +45,12 @@ sketch.draw = () => {
 
   noStroke();
 
-  if (millis() % 10000 == 0) {
+  if (millis() > 2000 && millis() % spawndelay < deltaTime * 1.1) {
     addZombie();
+    if (spawndelay > 1000) {
+      spawndelay *= 0.95;
+      console.log(spawndelay);
+    }
   }
 
   player.update(deltaTime, ground, zombies);
