@@ -24,29 +24,18 @@ export default class Background {
   addCloud() {
     let dir = round(random(0, 1)) * 2 - 1;
 
-    if (dir == 1) {
-      this.clouds.push({
-        img: random(this.cloud_assets),
-        x: -random(200, 400),
-        y: random(-20, 150),
-        w: random(180, 240),
-        speed: random(0.005, 0.02),
-        dir: dir,
-      });
-    } else {
-      this.clouds.push({
-        img: random(this.cloud_assets),
-        x: width + random(0, 200),
-        y: random(-20, 150),
-        w: random(180, 240),
-        speed: random(0.005, 0.02),
-        dir: dir,
-      });
-    }
+    this.clouds.push({
+      img: random(this.cloud_assets),
+      x: random(-500, width + 500),
+      y: random(-20, 150),
+      w: random(180, 240),
+      speed: random(0.005, 0.02),
+      dir: dir,
+    });
   }
 
   draw(dT) {
-    background(100, 50, 200);
+    background(80, 80, 240);
     noStroke();
     for (let cloud of this.clouds) {
       if (cloud.dir == 1 && cloud.x > width + 100) {
