@@ -44,6 +44,10 @@ sketch.draw = () => {
 
   noStroke();
 
+  if (millis() % 10000 == 0) {
+    addZombie();
+  }
+
   player.update(deltaTime, ground, zombies);
 
   for (let bullet of bullets) {

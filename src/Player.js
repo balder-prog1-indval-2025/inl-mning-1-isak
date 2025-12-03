@@ -8,6 +8,7 @@ export default class Player extends Entity {
     this.hp = 10;
     this.game_over = false;
     this.hit = false;
+    this.hitCooldown = 0;
   }
 
   update(dT, ground, zombies) {
@@ -57,28 +58,46 @@ export default class Player extends Entity {
       this.grounded = false;
       //console.log("skutt");
     }
+
     this.hit = false;
     for (let zombie of zombies) {
       if (zombie.hitbox.intersectsWith(this.hitbox)) {
-        console.log(this.hp);
-        if (this.x < zombie.x) {
-          this.x = zombie.x - this.w;
-          zombie.x = this.hitbox.x + this.w + 8;
-        }
+        /*
+        console.log(
+          `Collision detected! HP: ${this.hp}, Cooldown: ${this.hitCooldown}`
+        );
+        */
 
-        if (this.x > zombie.x) {
-          this.x = zombie.x + zombie.w;
-          zombie.x = this.hitbox.x - zombie.w - 8;
+        const overlapX = Math.min(
+          this.x + this.w - zombie.x,
+          zombie.x + zombie.w - this.x
+        );
+
+        if (this.x < zombie.x) {
+          this.x -= overlapX / 2;
+          zombie.x += overlapX / 2;
+        } else {
+          this.x += overlapX / 2;
+          zombie.x -= overlapX / 2;
         }
 
         this.hit = true;
         zombie.dir = -zombie.dir;
-        //console.log(zombie.dir);
       }
     }
-    if (this.hit) this.hp--;
-    this.game_over = this.hp <= 0;
 
+    if (this.hit && this.hitCooldown <= 0) {
+      this.hp--;
+      console.log(this.hp);
+      this.hitCooldown = 1000;
+    }
+
+    if (this.hitCooldown > 0) {
+      this.hitCooldown -= dT;
+      if (this.hitCooldown < 0) this.hitCooldown = 0;
+    }
+
+    this.game_over = this.hp <= 0;
     this.hitbox.moveTo(this.x, this.y);
   }
 }
