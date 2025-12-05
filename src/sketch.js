@@ -7,6 +7,13 @@ import Bullet from "./Bullet";
 import Background from "./Background";
 import Zombie from "./Zombie";
 
+import z1 from "./zombies/zombie1.png";
+import z2 from "./zombies/zombie2.png";
+import z3 from "./zombies/zombie3.png";
+import z4 from "./zombies/zombie4.png";
+import z5 from "./zombies/zombie5.png";
+import z6 from "./zombies/zombie6.png";
+
 let ground;
 let player;
 let bullets = [];
@@ -17,8 +24,10 @@ let deltaTime = 5;
 let spawndelay = 5000;
 let lastTime;
 
+let zombie_images = [];
+
 function addZombie() {
-  zombies.push(new Zombie(-1000, height - 149, 30, 50));
+  zombies.push(new Zombie(-1000, height - 149, 30, 50, null, zombie_images));
   if (zombies[zombies.length - 1].dir == 1) {
     zombies[zombies.length - 1].x = -200;
   } else if (zombies[zombies.length - 1].dir == -1) {
@@ -36,6 +45,13 @@ sketch.setup = () => {
   player.setColor(255, 0, 0);
 
   lastTime = millis();
+
+  zombie_images.push(loadImage(z1));
+  zombie_images.push(loadImage(z2));
+  zombie_images.push(loadImage(z3));
+  zombie_images.push(loadImage(z4));
+  zombie_images.push(loadImage(z5));
+  zombie_images.push(loadImage(z6));
 };
 
 sketch.draw = () => {
