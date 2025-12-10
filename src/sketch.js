@@ -17,6 +17,10 @@ import totkopfimage from "./icons/totkopf.png";
 
 import NumberDisplay from "./NumberDisplay";
 
+import TH from "./HERZ/TOTHERZ.png";
+import AH from "./HERZ/HERZ.png";
+import HP from "./HP";
+
 let ground;
 let player;
 let bullets = [];
@@ -24,6 +28,7 @@ let background;
 let zombies = [];
 let killcounter;
 let killcount = 0;
+let hp_bar;
 
 let deltaTime = 5;
 let spawndelay = 5000;
@@ -45,7 +50,11 @@ sketch.setup = () => {
   background = new Background();
   ground = new Block(-100, height - 100, width + 200, 100, 150, 200, 0);
   let totkopf = loadImage(totkopfimage);
-  killcounter = new NumberDisplay(20, 20, 30, "red", totkopf);
+  killcounter = new NumberDisplay(20, 50, 30, "red", totkopf);
+
+  let alive_img = loadImage(AH);
+  let dead_img = loadImage(TH);
+  hp_bar = new HP(20, 20, 25, alive_img, dead_img);
 
   player = new Player(100, 100, 30, 40);
   addZombie();
@@ -61,6 +70,8 @@ sketch.setup = () => {
   zombie_images.push(loadImage(z6));
 };
 
+let lastSpawnTime = 0;
+
 sketch.draw = () => {
   deltaTime = millis() - lastTime;
 
@@ -68,10 +79,12 @@ sketch.draw = () => {
 
   noStroke();
 
-  if (millis() > 2000 && millis() % spawndelay < deltaTime * 1.1) {
+  if (millis() > 2000 && millis() - lastSpawnTime >= spawndelay) {
     addZombie();
-    if (spawndelay > 1000) {
-      spawndelay *= 0.95;
+    lastSpawnTime = millis();
+
+    if (spawndelay > 1500) {
+      spawndelay *= 0.99;
       console.log(spawndelay);
     }
   }
@@ -100,6 +113,8 @@ sketch.draw = () => {
   ground.draw();
 
   killcounter.draw();
+  hp_bar.draw();
+  hp_bar.setHP(player.hp);
 
   lastTime = millis();
 };
