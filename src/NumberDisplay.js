@@ -26,7 +26,9 @@ export default class NumberDisplay {
   draw() {
     image(this.img, this.x, this.y, this.size, this.size);
     fill(this.color);
-    textFont(`bold ${this.size / 2}px Courier, monospace`);
-    text(this.value, this.x + this.size + 12, this.y + this.size / 2);
+    textSize(this.size * 0.7);
+    textAlign(LEFT, CENTER);
+    textFont(`bold Courier, monospace`);
+    text(this.value, this.x + this.size + 12, this.y + this.size / 2 + 2);
   }
 }

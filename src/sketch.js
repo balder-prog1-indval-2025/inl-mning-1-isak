@@ -13,12 +13,17 @@ import z3 from "./zombies/zombie3.png";
 import z4 from "./zombies/zombie4.png";
 import z5 from "./zombies/zombie5.png";
 import z6 from "./zombies/zombie6.png";
+import totkopfimage from "./icons/totkopf.png";
+
+import NumberDisplay from "./NumberDisplay";
 
 let ground;
 let player;
 let bullets = [];
 let background;
 let zombies = [];
+let killcounter;
+let killcount = 0;
 
 let deltaTime = 5;
 let spawndelay = 5000;
@@ -39,6 +44,8 @@ sketch.setup = () => {
   createCanvas(700, 500);
   background = new Background();
   ground = new Block(-100, height - 100, width + 200, 100, 150, 200, 0);
+  let totkopf = loadImage(totkopfimage);
+  killcounter = new NumberDisplay(20, 20, 30, "white", totkopf);
 
   player = new Player(100, 100, 30, 40);
   addZombie();
@@ -81,12 +88,18 @@ sketch.draw = () => {
   for (let zombie of zombies) {
     zombie.update(deltaTime, bullets, player);
     zombie.draw();
+    if (zombie.dead) {
+      killcount++;
+      killcounter.setValue(killcount);
+    }
   }
   zombies = zombies.filter((zombie) => !zombie.dead);
 
   player.draw();
 
   ground.draw();
+
+  killcounter.draw();
 
   lastTime = millis();
 };
