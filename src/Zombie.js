@@ -44,13 +44,28 @@ export default class Zombie extends Entity {
   }
 
   draw() {
-    const frameIndex = Math.floor(frameCount / 5) % this.zombie_images.length;
-    image(
-      this.zombie_images[frameIndex],
-      this.x,
-      this.y - 20,
-      this.w * 1.5,
-      this.h * 1.5
-    );
+    const frameIndex = Math.floor(frameCount / 3) % this.zombie_images.length;
+    if (this.x_vel < -this.x_movement_speed * 0.1) {
+      push();
+      translate(this.x + (this.w * 1.5) / 2, 0);
+      scale(-1, 1);
+      image(
+        this.zombie_images[frameIndex],
+        (-this.w * 1.5) / 2,
+        this.y - 25,
+        this.w * 1.5,
+        this.h * 1.5
+      );
+      pop();
+      return;
+    } else {
+      image(
+        this.zombie_images[frameIndex],
+        this.x,
+        this.y - 25,
+        this.w * 1.5,
+        this.h * 1.5
+      );
+    }
   }
 }
