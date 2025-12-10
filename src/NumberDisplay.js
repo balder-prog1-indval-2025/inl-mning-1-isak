@@ -28,7 +28,8 @@ export default class NumberDisplay {
     fill(this.color);
     textSize(this.size * 0.7);
     textAlign(LEFT, CENTER);
-    textFont(`bold Courier, monospace`);
-    text(this.value, this.x + this.size + 12, this.y + this.size / 2 + 2);
+    textStyle(BOLD);
+    textFont(`Courier`);
+    text(this.value, this.x + this.size + 8, this.y + this.size / 2 + 2);
   }
 }

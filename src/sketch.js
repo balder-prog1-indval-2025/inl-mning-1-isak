@@ -45,7 +45,7 @@ sketch.setup = () => {
   background = new Background();
   ground = new Block(-100, height - 100, width + 200, 100, 150, 200, 0);
   let totkopf = loadImage(totkopfimage);
-  killcounter = new NumberDisplay(20, 20, 30, "white", totkopf);
+  killcounter = new NumberDisplay(20, 20, 30, "red", totkopf);
 
   player = new Player(100, 100, 30, 40);
   addZombie();

@@ -45,6 +45,10 @@ export default class Zombie extends Entity {
 
   draw() {
     const frameIndex = Math.floor(frameCount / 3) % this.zombie_images.length;
+    const imgWidth = this.w * 2.3;
+    const imgHeight =
+      this.zombie_images[frameIndex].height *
+      (imgWidth / this.zombie_images[frameIndex].width);
     if (this.x_vel < -this.x_movement_speed * 0.1) {
       push();
       translate(this.x + (this.w * 1.5) / 2, 0);
@@ -52,9 +56,9 @@ export default class Zombie extends Entity {
       image(
         this.zombie_images[frameIndex],
         (-this.w * 1.5) / 2,
-        this.y - 25,
-        this.w * 1.5,
-        this.h * 1.5
+        this.y - 20,
+        imgWidth,
+        imgHeight
       );
       pop();
       return;
@@ -62,9 +66,9 @@ export default class Zombie extends Entity {
       image(
         this.zombie_images[frameIndex],
         this.x,
-        this.y - 25,
-        this.w * 1.5,
-        this.h * 1.5
+        this.y - 20,
+        imgWidth,
+        imgHeight
       );
     }
   }
