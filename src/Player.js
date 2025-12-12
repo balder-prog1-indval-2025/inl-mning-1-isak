@@ -125,7 +125,7 @@ export default class Player extends Entity {
     const currentFrame =
       abs(this.x_vel) > 0.1 ? this.frames[frameIndex] : this.idle;
 
-    console.log(this.x_vel);
+    //console.log(this.x_vel);
 
     const imgWidth = this.w * 2.3;
     const imgHeight = currentFrame.height * (imgWidth / currentFrame.width);
