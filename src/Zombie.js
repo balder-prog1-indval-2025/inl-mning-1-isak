@@ -55,7 +55,7 @@ export default class Zombie extends Entity {
       scale(-1, 1);
       image(
         this.zombie_images[frameIndex],
-        (-this.w * 1.5) / 2,
+        (-this.w * 1.5) / 2 - 4,
         this.y - 20,
         imgWidth,
         imgHeight
@@ -65,7 +65,7 @@ export default class Zombie extends Entity {
     } else {
       image(
         this.zombie_images[frameIndex],
-        this.x,
+        this.x - 18,
         this.y - 20,
         imgWidth,
         imgHeight

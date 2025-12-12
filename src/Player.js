@@ -125,20 +125,20 @@ export default class Player extends Entity {
     const currentFrame =
       abs(this.x_vel) > 0.1 ? this.frames[frameIndex] : this.idle;
 
-    console.log(this.x_vel);
+    //console.log(this.x_vel);
 
     const imgWidth = this.w * 2.3;
     const imgHeight = currentFrame.height * (imgWidth / currentFrame.width);
 
     if (this.dir == 1) {
-      image(currentFrame, this.x, this.y - 26, imgWidth, imgHeight);
+      image(currentFrame, this.x - 18, this.y - 26, imgWidth, imgHeight);
     } else {
       push();
       translate(this.x + (this.w * 1.5) / 2, 0);
       scale(-1, 1);
       image(
         currentFrame,
-        (-this.w * 1.5) / 2 - 20,
+        (-this.w * 1.5) / 2 - 3,
         this.y - 26,
         imgWidth,
         imgHeight
