@@ -3,12 +3,24 @@ import m2 from "./moln/m2.png";
 import m3 from "./moln/m3.png";
 import m4 from "./moln/m4.png";
 
+import f1 from "./Houses/Fabrik1.png";
+import f2 from "./Houses/Fabrik2.png";
+import f3 from "./Houses/Fabrik3.png";
+import f4 from "./Houses/Fabrik4.png";
+import f5 from "./Houses/Fabrik5.png";
+
 export default class Background {
   constructor() {
     this.m1 = loadImage(m1);
     this.m2 = loadImage(m2);
     this.m3 = loadImage(m3);
     this.m4 = loadImage(m4);
+
+    this.f1 = loadImage(f1);
+    this.f2 = loadImage(f2);
+    this.f3 = loadImage(f3);
+    this.f4 = loadImage(f4);
+    this.f5 = loadImage(f5);
 
     this.cloud_assets = [this.m1, this.m2, this.m3, this.m4];
     this.clouds = [];
@@ -19,6 +31,8 @@ export default class Background {
     this.addCloud();
     this.addCloud();
     this.addCloud();
+
+    this.fabrik_assets = [this.f1, this.f2, this.f3, this.f4, this.f5];
   }
 
   addCloud() {
@@ -53,5 +67,19 @@ export default class Background {
         cloud.w * (cloud.img.height / cloud.img.width)
       );
     }
+
+    const frameIndex = Math.floor(frameCount / 10) % this.fabrik_assets.length;
+    const imgWidth = 100;
+    const imgHeight =
+      this.fabrik_assets[frameIndex].height *
+      (imgWidth / this.fabrik_assets[frameIndex].width);
+
+    image(
+      this.fabrik_assets[frameIndex],
+      -10,
+      height / 2 + 50,
+      imgWidth,
+      imgHeight
+    );
   }
 }
