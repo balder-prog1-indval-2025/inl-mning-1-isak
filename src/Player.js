@@ -1,3 +1,11 @@
+import p1 from "./player/frame0.png";
+import p2 from "./player/frame1.png";
+import p3 from "./player/frame2.png";
+import p4 from "./player/frame3.png";
+import p5 from "./player/frame4.png";
+import p6 from "./player/frame5.png";
+import idle_frame from "./player/idle.png";
+
 import Entity from "./Entity";
 
 export default class Player extends Entity {
@@ -9,6 +17,17 @@ export default class Player extends Entity {
     this.game_over = false;
     this.hit = false;
     this.hitCooldown = 0;
+
+    this.p1 = loadImage(p1);
+    this.p2 = loadImage(p2);
+    this.p3 = loadImage(p3);
+    this.p4 = loadImage(p4);
+    this.p5 = loadImage(p5);
+    this.p6 = loadImage(p6);
+
+    this.frames = [this.p1, this.p2, this.p3, this.p4, this.p5, this.p6];
+
+    this.idle = loadImage(idle_frame);
   }
 
   update(dT, ground, zombies) {
@@ -99,5 +118,35 @@ export default class Player extends Entity {
 
     this.game_over = this.hp <= 0;
     this.hitbox.moveTo(this.x, this.y);
+  }
+
+  draw() {
+    const frameIndex = Math.floor(frameCount / 5) % this.frames.length;
+    const currentFrame =
+      abs(this.x_vel) > 0.1 ? this.frames[frameIndex] : this.idle;
+
+    console.log(this.x_vel);
+
+    const imgWidth = this.w * 2.3;
+    const imgHeight = currentFrame.height * (imgWidth / currentFrame.width);
+
+    if (this.dir == 1) {
+      image(currentFrame, this.x, this.y - 26, imgWidth, imgHeight);
+    } else {
+      push();
+      translate(this.x + (this.w * 1.5) / 2, 0);
+      scale(-1, 1);
+      image(
+        currentFrame,
+        (-this.w * 1.5) / 2 - 20,
+        this.y - 26,
+        imgWidth,
+        imgHeight
+      );
+      pop();
+      return;
+    }
+
+    //super.draw();
   }
 }

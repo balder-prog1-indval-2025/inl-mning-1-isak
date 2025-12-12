@@ -34,6 +34,13 @@ let deltaTime = 5;
 let spawndelay = 5000;
 let lastTime;
 
+let shootingCooldown = 0;
+const cooldownConstant = 100;
+let cooldownSpeedCoefficient = 0.2;
+
+let damageAlpha = 0;
+const damageAlphaSpeed = 0.2;
+
 let zombie_images = [];
 
 function addZombie() {
@@ -71,6 +78,8 @@ sketch.setup = () => {
 };
 
 let lastSpawnTime = 0;
+
+let lastHP = 10;
 
 sketch.draw = () => {
   deltaTime = millis() - lastTime;
@@ -116,13 +125,40 @@ sketch.draw = () => {
   hp_bar.draw();
   hp_bar.setHP(player.hp);
 
+  if (player.hp < lastHP) {
+    damageAlpha = 180;
+  }
+  lastHP = player.hp;
+  if (damageAlpha > 0) {
+    damageAlpha -= deltaTime * damageAlphaSpeed;
+    if (damageAlpha < 0) {
+      damageAlpha = 0;
+    }
+  }
+
+  fill(230, 0, 0, damageAlpha);
+  rect(0, 0, width, height);
+
+  if (shootingCooldown > 0) {
+    shootingCooldown -= deltaTime * cooldownSpeedCoefficient;
+    if (shootingCooldown < 0) {
+      shootingCooldown = 0;
+    }
+  }
+
+  fill(0);
+  rect(width - cooldownConstant - 20, 20, cooldownConstant, 10);
+  fill(255);
+  rect(width - cooldownConstant - 20, 20, shootingCooldown, 10);
+
   lastTime = millis();
 };
 
 sketch.keyPressed = () => {
-  if (key == "w") {
+  if (key == "w" && shootingCooldown <= 0) {
     let launch_x = player.x + player.w / 2;
     let launch_y = player.y + player.h / 3;
     bullets.push(new Bullet(launch_x, launch_y, player.dir, abs(player.x_vel)));
+    shootingCooldown = cooldownConstant;
   }
 };

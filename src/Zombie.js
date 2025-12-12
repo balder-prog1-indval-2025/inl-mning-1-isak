@@ -49,7 +49,7 @@ export default class Zombie extends Entity {
     const imgHeight =
       this.zombie_images[frameIndex].height *
       (imgWidth / this.zombie_images[frameIndex].width);
-    if (this.x_vel < -this.x_movement_speed * 0.1) {
+    if (this.x_vel < -this.x_movement_speed * 0.3) {
       push();
       translate(this.x + (this.w * 1.5) / 2, 0);
       scale(-1, 1);
