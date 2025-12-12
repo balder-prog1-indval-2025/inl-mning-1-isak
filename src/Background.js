@@ -9,6 +9,8 @@ import f3 from "./Houses/Fabrik3.png";
 import f4 from "./Houses/Fabrik4.png";
 import f5 from "./Houses/Fabrik5.png";
 
+import burg from "./Houses/Burg.png";
+
 export default class Background {
   constructor() {
     this.m1 = loadImage(m1);
@@ -21,6 +23,8 @@ export default class Background {
     this.f3 = loadImage(f3);
     this.f4 = loadImage(f4);
     this.f5 = loadImage(f5);
+
+    this.burg = loadImage(burg);
 
     this.cloud_assets = [this.m1, this.m2, this.m3, this.m4];
     this.clouds = [];
@@ -81,5 +85,7 @@ export default class Background {
       imgWidth,
       imgHeight
     );
+
+    image(this.burg, 100, height / 2 + 50, imgWidth, imgHeight);
   }
 }
