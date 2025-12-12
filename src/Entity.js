@@ -36,6 +36,7 @@ export default class Entity {
   }
 
   draw() {
+    noStroke();
     fill(this.r, this.g, this.b);
     rect(this.x, this.y, this.w, this.h - 1);
   }

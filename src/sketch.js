@@ -157,7 +157,7 @@ sketch.draw = () => {
 sketch.keyPressed = () => {
   if (key == "w" && shootingCooldown <= 0) {
     let launch_x = player.x + player.w / 2;
-    let launch_y = player.y + player.h / 3 - 13;
+    let launch_y = player.y + player.h / 3 - 5;
     bullets.push(new Bullet(launch_x, launch_y, player.dir, abs(player.x_vel)));
     shootingCooldown = cooldownConstant;
   }

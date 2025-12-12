@@ -17,6 +17,14 @@ export default class HitBox {
     this.yorg = y;
     this.x = this.xorg + this.x_off;
     this.y = this.yorg + this.y_off;
+
+    /*
+    noFill();
+    stroke(0);
+    strokeWeight(1);
+    rect(this.x, this.y, this.w, this.h);
+    noStroke();
+    */
   }
 
   intersectsWith(other_box) {

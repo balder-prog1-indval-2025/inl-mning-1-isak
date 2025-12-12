@@ -131,14 +131,14 @@ export default class Player extends Entity {
     const imgHeight = currentFrame.height * (imgWidth / currentFrame.width);
 
     if (this.dir == 1) {
-      image(currentFrame, this.x, this.y - 26, imgWidth, imgHeight);
+      image(currentFrame, this.x - 18, this.y - 26, imgWidth, imgHeight);
     } else {
       push();
       translate(this.x + (this.w * 1.5) / 2, 0);
       scale(-1, 1);
       image(
         currentFrame,
-        (-this.w * 1.5) / 2 - 20,
+        (-this.w * 1.5) / 2 - 3,
         this.y - 26,
         imgWidth,
         imgHeight
