@@ -33,7 +33,8 @@ let hp_bar;
 let dead = false;
 
 let deltaTime = 5;
-let spawndelay = 5000;
+const startSpawnDelay = 3000;
+let spawndelay = startSpawnDelay;
 let lastTime;
 
 let shootingCooldown = 0;
@@ -45,6 +46,8 @@ const damageAlphaSpeed = 0.2;
 
 let maxAmmo = 3;
 let ammo = maxAmmo;
+
+let totkopf;
 
 let zombie_images = [];
 
@@ -61,7 +64,7 @@ sketch.setup = () => {
   createCanvas(700, 500);
   background = new Background();
   ground = new Block(-100, height - 100, width + 200, 100, 150, 200, 0);
-  let totkopf = loadImage(totkopfimage);
+  totkopf = loadImage(totkopfimage);
   killcounter = new NumberDisplay(20, 50, 30, "red", totkopf);
 
   let alive_img = loadImage(AH);
@@ -129,13 +132,12 @@ function resetGame() {
   bullets = [];
   background;
   zombies = [];
-  killcounter;
   killcount = 0;
   hp_bar;
   dead = false;
 
   deltaTime = 5;
-  spawndelay = 5000;
+  spawndelay = startSpawnDelay;
   lastTime;
 
   shootingCooldown = 0;
@@ -146,6 +148,7 @@ function resetGame() {
 
   player = new Player(100, 100, 30, 40);
   player.setColor(255, 0, 0);
+  killcounter.setValue(killcount);
 
   addZombie();
 }
@@ -156,7 +159,7 @@ sketch.draw = () => {
   deltaTime = millis() - lastTime;
 
   if (dead) {
-    dead = deathScreen();
+    dead = deathScreen(totkopf);
     if (!dead) {
       resetGame();
     }
