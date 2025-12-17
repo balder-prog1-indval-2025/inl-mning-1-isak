@@ -20,6 +20,7 @@ import NumberDisplay from "./NumberDisplay";
 import TH from "./HERZ/TOTHERZ.png";
 import AH from "./HERZ/HERZ.png";
 import HP from "./HP";
+import deathScreen from "./deathScreen";
 
 let ground;
 let player;
@@ -29,6 +30,7 @@ let zombies = [];
 let killcounter;
 let killcount = 0;
 let hp_bar;
+let dead = false;
 
 let deltaTime = 5;
 let spawndelay = 5000;
@@ -36,10 +38,13 @@ let lastTime;
 
 let shootingCooldown = 0;
 const cooldownConstant = 100;
-let cooldownSpeedCoefficient = 0.2;
+let cooldownSpeedCoefficient = 0.05;
 
 let damageAlpha = 0;
 const damageAlphaSpeed = 0.2;
+
+let maxAmmo = 3;
+let ammo = maxAmmo;
 
 let zombie_images = [];
 
@@ -81,17 +86,97 @@ let lastSpawnTime = 0;
 
 let lastHP = 10;
 
+function cooldownHandler(dT) {
+  if (shootingCooldown > 0) {
+    shootingCooldown -= dT * cooldownSpeedCoefficient;
+    if (shootingCooldown < 0) {
+      shootingCooldown = 0;
+    }
+  }
+  fill(0);
+  rect(width - cooldownConstant - 20, 20, cooldownConstant, 10);
+  fill(255);
+  rect(width - cooldownConstant - 20, 20, shootingCooldown, 10);
+}
+
+function hurtOverlay(player, dT) {
+  if (player.hp < lastHP) {
+    damageAlpha = 180;
+  }
+  lastHP = player.hp;
+  if (damageAlpha > 0) {
+    damageAlpha -= dT * damageAlphaSpeed;
+    if (damageAlpha < 0) {
+      damageAlpha = 0;
+    }
+  }
+
+  fill(230, 0, 0, damageAlpha);
+  rect(0, 0, width, height);
+}
+
+function bulletHandler(dT) {
+  for (let bullet of bullets) {
+    bullet.update(dT);
+    bullet.draw();
+  }
+
+  bullets = bullets.filter((bullet) => !bullet.outOfBounds());
+}
+
+function resetGame() {
+  player;
+  bullets = [];
+  background;
+  zombies = [];
+  killcounter;
+  killcount = 0;
+  hp_bar;
+  dead = false;
+
+  deltaTime = 5;
+  spawndelay = 5000;
+  lastTime;
+
+  shootingCooldown = 0;
+
+  damageAlpha = 0;
+  maxAmmo = 3;
+  ammo = maxAmmo;
+
+  player = new Player(100, 100, 30, 40);
+  player.setColor(255, 0, 0);
+
+  addZombie();
+}
+
+let timePassed = 0;
+
 sketch.draw = () => {
   deltaTime = millis() - lastTime;
+
+  if (dead) {
+    dead = deathScreen();
+    if (!dead) {
+      resetGame();
+    }
+    lastTime = millis();
+    return;
+  }
+
+  if (player.hp <= 0 && !dead) {
+    dead = true;
+  }
+
+  timePassed += deltaTime;
 
   background.draw(deltaTime);
 
   noStroke();
 
-  if (millis() > 2000 && millis() - lastSpawnTime >= spawndelay) {
+  if (timePassed > spawndelay) {
+    timePassed = 0;
     addZombie();
-    lastSpawnTime = millis();
-
     if (spawndelay > 1500) {
       spawndelay *= 0.99;
       console.log(spawndelay);
@@ -100,12 +185,7 @@ sketch.draw = () => {
 
   player.update(deltaTime, ground, zombies);
 
-  for (let bullet of bullets) {
-    bullet.update(deltaTime);
-    bullet.draw();
-  }
-
-  bullets = bullets.filter((bullet) => !bullet.outOfBounds());
+  bulletHandler(deltaTime);
 
   for (let zombie of zombies) {
     zombie.update(deltaTime, bullets, player);
@@ -118,38 +198,13 @@ sketch.draw = () => {
   zombies = zombies.filter((zombie) => !zombie.dead);
 
   player.draw();
-
   ground.draw();
-
   killcounter.draw();
   hp_bar.draw();
   hp_bar.setHP(player.hp);
 
-  if (player.hp < lastHP) {
-    damageAlpha = 180;
-  }
-  lastHP = player.hp;
-  if (damageAlpha > 0) {
-    damageAlpha -= deltaTime * damageAlphaSpeed;
-    if (damageAlpha < 0) {
-      damageAlpha = 0;
-    }
-  }
-
-  fill(230, 0, 0, damageAlpha);
-  rect(0, 0, width, height);
-
-  if (shootingCooldown > 0) {
-    shootingCooldown -= deltaTime * cooldownSpeedCoefficient;
-    if (shootingCooldown < 0) {
-      shootingCooldown = 0;
-    }
-  }
-
-  fill(0);
-  rect(width - cooldownConstant - 20, 20, cooldownConstant, 10);
-  fill(255);
-  rect(width - cooldownConstant - 20, 20, shootingCooldown, 10);
+  hurtOverlay(player, deltaTime);
+  cooldownHandler(deltaTime);
 
   lastTime = millis();
 };
@@ -159,6 +214,10 @@ sketch.keyPressed = () => {
     let launch_x = player.x + player.w / 2;
     let launch_y = player.y + player.h / 3 - 5;
     bullets.push(new Bullet(launch_x, launch_y, player.dir, abs(player.x_vel)));
-    shootingCooldown = cooldownConstant;
+    ammo--;
+    if (ammo == 0) {
+      shootingCooldown = cooldownConstant;
+      ammo = maxAmmo;
+    }
   }
 };

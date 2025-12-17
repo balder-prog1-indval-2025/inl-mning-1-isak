@@ -41,6 +41,17 @@ export default class Background {
     this.addCloud();
 
     this.fabrik_assets = [this.f1, this.f2, this.f3, this.f4, this.f5];
+
+    this.stars = [];
+    const starCount = 100;
+    for (let i = 0; i < starCount; i++) {
+      this.stars.push({
+        x: random(0, width),
+        y: random(0, height),
+        size: random(1, 3),
+        alpha: random(100, 255),
+      });
+    }
   }
 
   addCloud() {
@@ -50,14 +61,49 @@ export default class Background {
       img: random(this.cloud_assets),
       x: random(-500, width + 500),
       y: random(-20, 150),
-      w: random(180, 240),
+      w: random(80, 150),
       speed: random(0.005, 0.02),
       dir: dir,
     });
   }
 
+  sunset() {
+    drawingContext.save();
+    const gradient = drawingContext.createLinearGradient(
+      width / 2,
+      0,
+      width / 2,
+      height
+    );
+
+    gradient.addColorStop(0.0, "#2c3e50");
+
+    // Transition to a reddish-pink
+    gradient.addColorStop(0.5, "#e74c3c");
+
+    // Bright Orange
+    gradient.addColorStop(0.8, "#f39c12");
+
+    // Yellow/White at the horizon (Where the sun is)
+    gradient.addColorStop(1.0, "#f1c40f");
+
+    // Set the fill style and draw a rectangle
+    drawingContext.fillStyle = gradient;
+    drawingContext.fillRect(0, 0, width, height);
+    drawingContext.restore();
+  }
+
   draw(dT) {
-    background(80, 80, 240);
+    this.sunset();
+    // Draw stars
+    noStroke();
+    for (let star of this.stars) {
+      star.alpha += random(-20, 20);
+      star.alpha = constrain(star.alpha, 50, 255);
+      fill(255, 255, 255, star.alpha);
+      circle(star.x, star.y, star.size);
+    }
+
     noStroke();
     for (let cloud of this.clouds) {
       if (cloud.dir == 1 && cloud.x > width + 100) {
