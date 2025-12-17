@@ -11,6 +11,8 @@ import f5 from "./Houses/Fabrik5.png";
 
 import burg from "./Houses/Burg.png";
 
+import city from "./Houses/city.png";
+
 export default class Background {
   constructor() {
     this.m1 = loadImage(m1);
@@ -25,6 +27,8 @@ export default class Background {
     this.f5 = loadImage(f5);
 
     this.burg = loadImage(burg);
+
+    this.city = loadImage(city);
 
     this.cloud_assets = [this.m1, this.m2, this.m3, this.m4];
     this.clouds = [];
@@ -72,20 +76,9 @@ export default class Background {
       );
     }
 
-    const frameIndex = Math.floor(frameCount / 10) % this.fabrik_assets.length;
-    const imgWidth = 100;
-    const imgHeight =
-      this.fabrik_assets[frameIndex].height *
-      (imgWidth / this.fabrik_assets[frameIndex].width);
+    const imgWidth = width;
+    const imgHeight = this.city.height * (imgWidth / this.city.width);
 
-    image(
-      this.fabrik_assets[frameIndex],
-      -10,
-      height / 2 + 50,
-      imgWidth,
-      imgHeight
-    );
-
-    image(this.burg, 100, height / 2 + 50, imgWidth, imgHeight);
+    image(this.city, 0, 100, width, imgHeight);
   }
 }
