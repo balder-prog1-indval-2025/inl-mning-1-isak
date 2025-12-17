@@ -20,6 +20,7 @@ import NumberDisplay from "./NumberDisplay";
 import TH from "./HERZ/TOTHERZ.png";
 import AH from "./HERZ/HERZ.png";
 import HP from "./HP";
+import deathScreen from "./deathScreen";
 
 let ground;
 let player;
@@ -29,6 +30,7 @@ let zombies = [];
 let killcounter;
 let killcount = 0;
 let hp_bar;
+let dead = false;
 
 let deltaTime = 5;
 let spawndelay = 5000;
@@ -91,7 +93,6 @@ function cooldownHandler(dT) {
       shootingCooldown = 0;
     }
   }
-
   fill(0);
   rect(width - cooldownConstant - 20, 20, cooldownConstant, 10);
   fill(255);
@@ -123,10 +124,50 @@ function bulletHandler(dT) {
   bullets = bullets.filter((bullet) => !bullet.outOfBounds());
 }
 
+function resetGame() {
+  player;
+  bullets = [];
+  background;
+  zombies = [];
+  killcounter;
+  killcount = 0;
+  hp_bar;
+  dead = false;
+
+  deltaTime = 5;
+  spawndelay = 5000;
+  lastTime;
+
+  shootingCooldown = 0;
+
+  damageAlpha = 0;
+  maxAmmo = 3;
+  ammo = maxAmmo;
+
+  player = new Player(100, 100, 30, 40);
+  player.setColor(255, 0, 0);
+
+  addZombie();
+}
+
 let timePassed = 0;
 
 sketch.draw = () => {
   deltaTime = millis() - lastTime;
+
+  if (dead) {
+    dead = deathScreen();
+    if (!dead) {
+      resetGame();
+    }
+    lastTime = millis();
+    return;
+  }
+
+  if (player.hp <= 0 && !dead) {
+    dead = true;
+  }
+
   timePassed += deltaTime;
 
   background.draw(deltaTime);
