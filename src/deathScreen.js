@@ -3,5 +3,5 @@ export default function deathScreen() {
   rect(0, 0, width, height);
 
   //return true to keep player dead, false to restart game
-  return true;
+  return !keyIsDown(32);
 }

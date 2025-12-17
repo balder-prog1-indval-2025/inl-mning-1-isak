@@ -57,7 +57,7 @@ export default class Background {
       img: random(this.cloud_assets),
       x: random(-500, width + 500),
       y: random(-20, 150),
-      w: random(180, 240),
+      w: random(80, 150),
       speed: random(0.005, 0.02),
       dir: dir,
     });
