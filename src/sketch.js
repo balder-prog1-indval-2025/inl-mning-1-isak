@@ -22,6 +22,12 @@ import AH from "./HERZ/HERZ.png";
 import HP from "./HP";
 import deathScreen from "./deathScreen";
 
+import B from "./mag/kula.png";
+import EB from "./mag/tomkula.png";
+import reload_source from "./mag/reload.png";
+
+import Magazine from "./Magazine";
+
 let ground;
 let player;
 let bullets = [];
@@ -44,10 +50,15 @@ let cooldownSpeedCoefficient = 0.05;
 let damageAlpha = 0;
 const damageAlphaSpeed = 0.2;
 
-let maxAmmo = 3;
+let maxAmmo = 5;
 let ammo = maxAmmo;
 
+let reloading = false;
+
 let totkopf;
+
+let reload_image;
+let magazine_ui;
 
 let zombie_images = [];
 
@@ -83,6 +94,19 @@ sketch.setup = () => {
   zombie_images.push(loadImage(z4));
   zombie_images.push(loadImage(z5));
   zombie_images.push(loadImage(z6));
+
+  let bullet_image = loadImage(B);
+  let empty_image = loadImage(EB);
+
+  reload_image = loadImage(reload_source);
+
+  magazine_ui = new Magazine(
+    width - 20,
+    40,
+    maxAmmo,
+    bullet_image,
+    empty_image
+  );
 };
 
 let lastSpawnTime = 0;
@@ -90,12 +114,17 @@ let lastSpawnTime = 0;
 let lastHP = 10;
 
 function cooldownHandler(dT) {
-  if (shootingCooldown > 0) {
-    shootingCooldown -= dT * cooldownSpeedCoefficient;
-    if (shootingCooldown < 0) {
+  if (reloading) {
+    if (shootingCooldown <= 0) {
       shootingCooldown = 0;
+      magazine_ui.reload();
+      ammo = maxAmmo;
+      reloading = false;
+    } else {
+      shootingCooldown -= dT * cooldownSpeedCoefficient;
     }
   }
+
   fill(0);
   rect(width - cooldownConstant - 20, 20, cooldownConstant, 10);
   fill(255);
@@ -200,11 +229,23 @@ sketch.draw = () => {
   }
   zombies = zombies.filter((zombie) => !zombie.dead);
 
+  if (magazine_ui.bulletsLeft == 0 && !reloading) {
+    let r_size = 40;
+    image(
+      reload_image,
+      width / 2 - r_size / 2,
+      height / 2 - r_size / 2,
+      r_size,
+      r_size
+    );
+  }
   player.draw();
   //ground.draw();
   killcounter.draw();
   hp_bar.draw();
   hp_bar.setHP(player.hp);
+
+  magazine_ui.draw();
 
   hurtOverlay(player, deltaTime);
   cooldownHandler(deltaTime);
@@ -213,14 +254,19 @@ sketch.draw = () => {
 };
 
 sketch.keyPressed = () => {
-  if (key == "w" && shootingCooldown <= 0) {
+  if (key == "w" && magazine_ui.bulletsLeft > 0 && !reloading) {
     let launch_x = player.x + player.w / 2;
     let launch_y = player.y + player.h / 3 - 5;
     bullets.push(new Bullet(launch_x, launch_y, player.dir, abs(player.x_vel)));
-    ammo--;
-    if (ammo == 0) {
-      shootingCooldown = cooldownConstant;
-      ammo = maxAmmo;
-    }
+    magazine_ui.use();
+  }
+
+  if (
+    key == "r" &&
+    magazine_ui.bulletsLeft < magazine_ui.capacity &&
+    !reloading
+  ) {
+    reloading = true;
+    shootingCooldown = cooldownConstant;
   }
 };
