@@ -13,6 +13,8 @@ import burg from "./Houses/Burg.png";
 
 import city from "./Houses/city.png";
 
+import grass from "./Grass/Grass.png";
+
 export default class Background {
   constructor() {
     this.m1 = loadImage(m1);
@@ -29,6 +31,8 @@ export default class Background {
     this.burg = loadImage(burg);
 
     this.city = loadImage(city);
+
+    this.grass = loadImage(grass);
 
     this.cloud_assets = [this.m1, this.m2, this.m3, this.m4];
     this.clouds = [];
@@ -124,7 +128,10 @@ export default class Background {
 
     const imgWidth = width;
     const imgHeight = this.city.height * (imgWidth / this.city.width);
+    const grassHeight = this.grass.height * (imgWidth / this.grass.width);
 
     image(this.city, 0, 100, width, imgHeight);
+
+    image(this.grass, 0, 370, width, grassHeight);
   }
 }

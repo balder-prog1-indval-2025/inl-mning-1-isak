@@ -201,7 +201,7 @@ sketch.draw = () => {
   zombies = zombies.filter((zombie) => !zombie.dead);
 
   player.draw();
-  ground.draw();
+  //ground.draw();
   killcounter.draw();
   hp_bar.draw();
   hp_bar.setHP(player.hp);
