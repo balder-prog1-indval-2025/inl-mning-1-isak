@@ -50,7 +50,8 @@ let cooldownSpeedCoefficient = 0.05;
 let damageAlpha = 0;
 const damageAlphaSpeed = 0.2;
 
-let maxAmmo = 5;
+const startMaxAmmo = 5;
+let maxAmmo = startMaxAmmo;
 let ammo = maxAmmo;
 
 let reloading = false;
@@ -172,7 +173,7 @@ function resetGame() {
   shootingCooldown = 0;
 
   damageAlpha = 0;
-  maxAmmo = 3;
+  maxAmmo = startMaxAmmo;
   ammo = maxAmmo;
 
   player = new Player(100, 100, 30, 40);

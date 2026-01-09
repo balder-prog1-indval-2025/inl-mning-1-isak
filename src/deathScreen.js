@@ -1,8 +1,8 @@
 let angle = 0;
 
 export default function deathScreen(tk, deltaTime) {
-  angle += deltaTime / 130;
-  let scale = Math.sin(angle) / 10 + 1;
+  angle += deltaTime / 200;
+  let scale = Math.sin(angle) / 15 + 1;
 
   fill(0);
   rect(0, 0, width, height);
