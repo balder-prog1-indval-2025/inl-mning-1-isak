@@ -229,7 +229,6 @@ sketch.draw = () => {
     addZombie();
     if (spawndelay > 1500) {
       spawndelay *= 0.99;
-      console.log(spawndelay);
     }
   }
 

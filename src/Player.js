@@ -107,7 +107,6 @@ export default class Player extends Entity {
 
     if (this.hit && this.hitCooldown <= 0) {
       this.hp--;
-      console.log(this.hp);
       this.hitCooldown = 1000;
     }
 
