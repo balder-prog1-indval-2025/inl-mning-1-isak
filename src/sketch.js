@@ -27,32 +27,36 @@ import EB from "./mag/tomkula.png";
 import reload_source from "./mag/reload.png";
 
 import Magazine from "./Magazine";
+import Drop from "./Drop";
+
+const startSpawnDelay = 3000;
+const cooldownConstant = 100;
+const damageAlphaSpeed = 0.2;
+const startMaxAmmo = 5;
+const maxHP = 10;
 
 let ground;
 let player;
-let bullets = [];
 let background;
-let zombies = [];
 let killcounter;
 let killcount = 0;
 let hp_bar;
 let dead = false;
 
-let deltaTime = 5;
-const startSpawnDelay = 3000;
+let bullets = [];
+let zombies = [];
+let drops = [];
+
+let deltaTime = 5; // preliminärt värde för deltaTime
 let spawndelay = startSpawnDelay;
 let lastTime;
 
 let shootingCooldown = 0;
-const cooldownConstant = 100;
 let cooldownSpeedCoefficient = 0.05;
 
 let damageAlpha = 0;
-const damageAlphaSpeed = 0.2;
 
-const startMaxAmmo = 5;
 let maxAmmo = startMaxAmmo;
-let ammo = maxAmmo;
 
 let reloading = false;
 
@@ -60,10 +64,17 @@ let totkopf;
 
 let reload_image;
 let magazine_ui;
-
 let zombie_images = [];
+let lastHP = 10;
+
+let bullet_image;
+let empty_image;
+let alive_img;
+let dead_img;
 
 function addZombie() {
+  // lägg till en ny zombie i spelet
+
   zombies.push(new Zombie(-1000, height - 149, 30, 50, null, zombie_images));
   if (zombies[zombies.length - 1].dir == 1) {
     zombies[zombies.length - 1].x = -200;
@@ -73,21 +84,14 @@ function addZombie() {
 }
 
 sketch.setup = () => {
+  // initialisera spelet, ladda in bilder
   createCanvas(700, 500);
   background = new Background();
+
   ground = new Block(-100, height - 100, width + 200, 100, 150, 200, 0);
+
   totkopf = loadImage(totkopfimage);
-  killcounter = new NumberDisplay(20, 50, 30, "red", totkopf);
-
-  let alive_img = loadImage(AH);
-  let dead_img = loadImage(TH);
-  hp_bar = new HP(20, 20, 25, alive_img, dead_img);
-
-  player = new Player(100, 100, 30, 40);
-  addZombie();
-  player.setColor(255, 0, 0);
-
-  lastTime = millis();
+  reload_image = loadImage(reload_source);
 
   zombie_images.push(loadImage(z1));
   zombie_images.push(loadImage(z2));
@@ -96,10 +100,19 @@ sketch.setup = () => {
   zombie_images.push(loadImage(z5));
   zombie_images.push(loadImage(z6));
 
-  let bullet_image = loadImage(B);
-  let empty_image = loadImage(EB);
+  bullet_image = loadImage(B);
+  empty_image = loadImage(EB);
+  alive_img = loadImage(AH);
+  dead_img = loadImage(TH);
 
-  reload_image = loadImage(reload_source);
+  killcounter = new NumberDisplay(20, 50, 30, "red", totkopf);
+  hp_bar = new HP(20, 20, 25, alive_img, dead_img);
+
+  player = new Player(100, 100, 30, 40);
+  addZombie();
+  player.setColor(255, 0, 0);
+
+  lastTime = millis();
 
   magazine_ui = new Magazine(
     width - 20,
@@ -110,16 +123,12 @@ sketch.setup = () => {
   );
 };
 
-let lastSpawnTime = 0;
-
-let lastHP = 10;
-
 function cooldownHandler(dT) {
+  // hantera reloading av vapnet, samt ritar ut en cooldown-bar högst upp till höger
   if (reloading) {
     if (shootingCooldown <= 0) {
       shootingCooldown = 0;
       magazine_ui.reload();
-      ammo = maxAmmo;
       reloading = false;
     } else {
       shootingCooldown -= dT * cooldownSpeedCoefficient;
@@ -133,6 +142,7 @@ function cooldownHandler(dT) {
 }
 
 function hurtOverlay(player, dT) {
+  // visar en halvgenomskinlig röd skärm när spelaren tar skada, som tonas bort över tid
   if (player.hp < lastHP) {
     damageAlpha = 180;
   }
@@ -149,6 +159,7 @@ function hurtOverlay(player, dT) {
 }
 
 function bulletHandler(dT) {
+  // uppdatera, rita ut och ta bort kulor
   for (let bullet of bullets) {
     bullet.update(dT);
     bullet.draw();
@@ -158,6 +169,8 @@ function bulletHandler(dT) {
 }
 
 function resetGame() {
+  // återställ alla variabler som förändras under spelets gång
+
   player;
   bullets = [];
   background;
@@ -165,6 +178,8 @@ function resetGame() {
   killcount = 0;
   hp_bar;
   dead = false;
+
+  drops = [];
 
   deltaTime = 5;
   spawndelay = startSpawnDelay;
@@ -174,7 +189,9 @@ function resetGame() {
 
   damageAlpha = 0;
   maxAmmo = startMaxAmmo;
-  ammo = maxAmmo;
+  reloading = false;
+  magazine_ui.capacity = maxAmmo;
+  magazine_ui.reload();
 
   player = new Player(100, 100, 30, 40);
   player.setColor(255, 0, 0);
@@ -220,12 +237,38 @@ sketch.draw = () => {
 
   bulletHandler(deltaTime);
 
+  for (let drop of drops) {
+    drop.draw(deltaTime);
+
+    if (player.hitbox.intersectsWith(drop.hitbox)) {
+      if (drop.type.drop_type == "hp") {
+        player.hp++;
+        if (player.hp > maxHP) {
+          player.hp = maxHP;
+        }
+      } else if (drop.type.drop_type == "ammo") {
+        if (magazine_ui.bulletsLeft < magazine_ui.capacity - 3) {
+          magazine_ui.bulletsLeft += 3;
+        } else {
+          magazine_ui.bulletsLeft = magazine_ui.capacity;
+        }
+      }
+
+      drops = drops.filter((d) => d != drop);
+    }
+  }
+
   for (let zombie of zombies) {
     zombie.update(deltaTime, bullets, player);
     zombie.draw();
     if (zombie.dead) {
       killcount++;
       killcounter.setValue(killcount);
+
+      // chans för dropp: 1/3
+      if (floor(random(0, 3)) == 0) {
+        drops.push(new Drop(zombie, alive_img, bullet_image));
+      }
     }
   }
   zombies = zombies.filter((zombie) => !zombie.dead);
@@ -240,6 +283,7 @@ sketch.draw = () => {
       r_size
     );
   }
+
   player.draw();
   //ground.draw();
   killcounter.draw();
@@ -255,6 +299,7 @@ sketch.draw = () => {
 };
 
 sketch.keyPressed = () => {
+  // hantering av skjutning
   if (key == "w" && magazine_ui.bulletsLeft > 0 && !reloading) {
     let launch_x = player.x + player.w / 2;
     let launch_y = player.y + player.h / 3 - 5;
@@ -262,6 +307,7 @@ sketch.keyPressed = () => {
     magazine_ui.use();
   }
 
+  // hantering av omladdning av magasinet
   if (
     key == "r" &&
     magazine_ui.bulletsLeft < magazine_ui.capacity &&
