@@ -6,7 +6,13 @@ let angle = 0;
  * @param {*} deltaTime deltatime
  * @returns boolean true to keep player dead, false to restart game
  */
-export default function deathScreen(tk, deltaTime) {
+export default function deathScreen(tk, deltaTime, killcount) {
+  // enkelt highscore-system med localStorage
+  let highscore = localStorage.getItem("kc");
+  if (highscore === null || killcount > highscore) {
+    localStorage.setItem("kc", killcount);
+  }
+
   angle += deltaTime / 200;
   let scale = Math.sin(angle) / 15 + 1;
 
@@ -24,6 +30,13 @@ export default function deathScreen(tk, deltaTime) {
   textAlign(CENTER, CENTER);
   textSize(30 * scale);
   text("PRESS SPACE TO PLAY AGAIN", width / 2, height / 2 + 140);
+
+  text(killcount + " ZOMBIES KILLED", width / 2, height / 2 + 200);
+  text(
+    "BEST: " + localStorage.getItem("kc") + " ZOMBIES",
+    width / 2,
+    height / 2 + 240
+  );
 
   //return true to keep player dead, false to restart game
   return !keyIsDown(32);
