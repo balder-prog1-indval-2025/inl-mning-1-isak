@@ -207,7 +207,7 @@ sketch.draw = () => {
   deltaTime = millis() - lastTime;
 
   if (dead) {
-    dead = deathScreen(totkopf, deltaTime);
+    dead = deathScreen(totkopf, deltaTime, killcount);
     if (!dead) {
       resetGame();
     }
