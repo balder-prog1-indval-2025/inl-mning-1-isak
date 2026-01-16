@@ -272,6 +272,8 @@ sketch.draw = () => {
   }
   zombies = zombies.filter((zombie) => !zombie.dead);
 
+  drops = drops.filter((drop) => !drop.remove);
+
   if (magazine_ui.bulletsLeft == 0 && !reloading) {
     let r_size = 40;
     image(
