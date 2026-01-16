@@ -58,35 +58,25 @@ export default class Player extends Entity {
     }
     this.x += this.x_vel * dT;
 
-    //console.log(this.grounded);
-
     if (this.hitbox.intersectsWith(ground.hitbox)) {
-      //console.log("t");
       this.y_vel = 0;
       this.ground_y = ground.y - this.h - 2;
       this.y = ground.y - this.h + 1;
       this.grounded = true;
     } else {
       this.y += this.y_vel * dT;
-      //console.log("n");
+
       this.grounded = false;
     }
     if (keyIsDown(32) && this.grounded) {
       this.y_vel = -this.jump_power;
       this.y = this.ground_y;
       this.grounded = false;
-      //console.log("skutt");
     }
 
     this.hit = false;
     for (let zombie of zombies) {
       if (zombie.hitbox.intersectsWith(this.hitbox)) {
-        /*
-        console.log(
-          `Collision detected! HP: ${this.hp}, Cooldown: ${this.hitCooldown}`
-        );
-        */
-
         const overlapX = Math.min(
           this.x + this.w - zombie.x,
           zombie.x + zombie.w - this.x
@@ -107,7 +97,7 @@ export default class Player extends Entity {
 
     if (this.hit && this.hitCooldown <= 0) {
       this.hp--;
-      console.log(this.hp);
+
       this.hitCooldown = 1000;
     }
 
@@ -124,8 +114,6 @@ export default class Player extends Entity {
     const frameIndex = Math.floor(frameCount / 5) % this.frames.length;
     const currentFrame =
       abs(this.x_vel) > 0.1 ? this.frames[frameIndex] : this.idle;
-
-    //console.log(this.x_vel);
 
     const imgWidth = this.w * 2.3;
     const imgHeight = currentFrame.height * (imgWidth / currentFrame.width);
@@ -146,7 +134,5 @@ export default class Player extends Entity {
       pop();
       return;
     }
-
-    //super.draw();
   }
 }

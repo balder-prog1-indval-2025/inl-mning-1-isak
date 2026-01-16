@@ -10,7 +10,7 @@ export default class Zombie extends Entity {
     this.spawning = true;
     this.zombie_images = zombie_images;
   }
-  update(dT, bullets, player) {
+  update(dT, bullets) {
     if (this.spawning) {
       this.x_vel = this.dir * this.x_movement_speed * dT;
       this.x += this.x_vel;

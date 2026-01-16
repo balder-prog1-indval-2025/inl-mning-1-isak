@@ -19,6 +19,9 @@ export default class Drop {
     ];
 
     this.type = random(this.types);
+
+    this.lifelegnth = 5;
+    this.remove = false;
   }
 
   draw(dt) {
@@ -30,6 +33,12 @@ export default class Drop {
     this.middle_y = this.y + this.size / 2;
 
     this.y_offset = sin(this.animation_swell_angle * 0.5) * 3;
+
+    this.lifelegnth = this.lifelegnth - dt / 1000;
+
+    if (this.lifelegnth <= 0) {
+      this.remove = true;
+    }
 
     image(
       this.type.sprite,
