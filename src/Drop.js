@@ -21,7 +21,7 @@ export default class Drop {
 
     this.type = random(this.types);
 
-    this.lifespan = 5;
+    this.lifespan = 10;
     this.remove = false;
   }
 
