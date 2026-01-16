@@ -9,6 +9,14 @@ import idle_frame from "./player/idle.png";
 import Entity from "./Entity";
 
 export default class Player extends Entity {
+  /**
+   * Initialiserar spelare
+   * @param {*} x ursprunglig x position
+   * @param {*} y ursprunglig y position
+   * @param {*} w bredd
+   * @param {*} h höjd
+   * @param {*} sprite bild för spelaren
+   */
   constructor(x, y, w, h, sprite = null) {
     super(x, y, w, h, sprite);
     this.jump_power = 0.67;
@@ -18,6 +26,7 @@ export default class Player extends Entity {
     this.hit = false;
     this.hitCooldown = 0;
 
+    // ladda in alla bilder för spelarens animation och lagra i en array
     this.p1 = loadImage(p1);
     this.p2 = loadImage(p2);
     this.p3 = loadImage(p3);
@@ -33,6 +42,7 @@ export default class Player extends Entity {
   update(dT, ground, zombies) {
     this.y_vel += this.gravid;
 
+    // rärelse med A och D
     if (keyIsDown(65)) {
       this.target_x_vel = -this.x_movement_speed;
       if (this.x_vel > 0) this.dir = 1;
@@ -74,9 +84,11 @@ export default class Player extends Entity {
       this.grounded = false;
     }
 
+    // kolla efter och hantera kollision med zombies
     this.hit = false;
     for (let zombie of zombies) {
       if (zombie.hitbox.intersectsWith(this.hitbox)) {
+        // kollisionshantering - flytta isär spelaren och zombien
         const overlapX = Math.min(
           this.x + this.w - zombie.x,
           zombie.x + zombie.w - this.x
@@ -95,12 +107,14 @@ export default class Player extends Entity {
       }
     }
 
+    // tar hp från spelaren om cooldownen har runnit ut och återställer därefter cooldownen
     if (this.hit && this.hitCooldown <= 0) {
       this.hp--;
-
+      console.log(this.hp);
       this.hitCooldown = 1000;
     }
 
+    // hantering av cooldown
     if (this.hitCooldown > 0) {
       this.hitCooldown -= dT;
       if (this.hitCooldown < 0) this.hitCooldown = 0;
@@ -110,10 +124,17 @@ export default class Player extends Entity {
     this.hitbox.moveTo(this.x, this.y);
   }
 
+  /**
+   * Hanterar ritning av spelaren med animation
+   * @returns
+   */
   draw() {
+    // väljer animationsframe baserat på p5js inbyggda variabel frameCount
     const frameIndex = Math.floor(frameCount / 5) % this.frames.length;
     const currentFrame =
-      abs(this.x_vel) > 0.1 ? this.frames[frameIndex] : this.idle;
+      abs(this.x_vel) > 0.1 ? this.frames[frameIndex] : this.idle; // völjer idle-bild om spelaren står stilla, annars frame utifrån frameIndex
+
+    //console.log(this.x_vel);
 
     const imgWidth = this.w * 2.3;
     const imgHeight = currentFrame.height * (imgWidth / currentFrame.width);
@@ -121,9 +142,10 @@ export default class Player extends Entity {
     if (this.dir == 1) {
       image(currentFrame, this.x - 18, this.y - 26, imgWidth, imgHeight);
     } else {
+      // push, translate, sccale och pop används för att spegla bilden horisontellt när spelaren rör sig åt vänster
       push();
       translate(this.x + (this.w * 1.5) / 2, 0);
-      scale(-1, 1);
+      scale(-1, 1); // spegelvändning
       image(
         currentFrame,
         (-this.w * 1.5) / 2 - 3,

@@ -1,5 +1,11 @@
 let angle = 0;
 
+/**
+ * Ritar ut en game-over skärm med en dödskalle och text.
+ * @param {*} tk dödskalle bild
+ * @param {*} deltaTime deltatime
+ * @returns boolean true to keep player dead, false to restart game
+ */
 export default function deathScreen(tk, deltaTime) {
   angle += deltaTime / 200;
   let scale = Math.sin(angle) / 15 + 1;
