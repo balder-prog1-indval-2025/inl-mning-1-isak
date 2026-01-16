@@ -236,16 +236,16 @@ sketch.draw = () => {
 
   bulletHandler(deltaTime);
 
-  for (let drop of drops) {
-    drop.draw(deltaTime);
+  for (let c_drop of drops) {
+    c_drop.draw(deltaTime);
 
-    if (player.hitbox.intersectsWith(drop.hitbox)) {
-      if (drop.type.drop_type == "hp") {
+    if (player.hitbox.intersectsWith(c_drop.hitbox)) {
+      if (c_drop.type.drop_type == "hp") {
         player.hp++;
         if (player.hp > maxHP) {
           player.hp = maxHP;
         }
-      } else if (drop.type.drop_type == "ammo") {
+      } else if (c_drop.type.drop_type == "ammo") {
         if (magazine_ui.bulletsLeft < magazine_ui.capacity - 3) {
           magazine_ui.bulletsLeft += 3;
         } else {
@@ -253,7 +253,7 @@ sketch.draw = () => {
         }
       }
 
-      drops = drops.filter((d) => d != drop);
+      drops = drops.filter((d) => d != c_drop);
     }
   }
 
