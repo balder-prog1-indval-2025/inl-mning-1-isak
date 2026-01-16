@@ -42,7 +42,7 @@ export default class Player extends Entity {
   update(dT, ground, zombies) {
     this.y_vel += this.gravid;
 
-    // rärelse med A och D
+    // rörelse med A och D
     if (keyIsDown(65)) {
       this.target_x_vel = -this.x_movement_speed;
       if (this.x_vel > 0) this.dir = 1;

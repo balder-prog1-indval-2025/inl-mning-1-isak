@@ -81,6 +81,7 @@ function addZombie() {
   } else if (zombies[zombies.length - 1].dir == -1) {
     zombies[zombies.length - 1].x = width + 200 + zombies[zombies.length - 1].w;
   }
+  // beroende på zombiens riktning spawnar den på olika sidor av skärmen
 }
 
 sketch.setup = () => {

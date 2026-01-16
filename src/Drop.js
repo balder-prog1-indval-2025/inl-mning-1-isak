@@ -21,7 +21,7 @@ export default class Drop {
 
     this.type = random(this.types);
 
-    this.lifelegnth = 5;
+    this.lifespan = 5;
     this.remove = false;
   }
 
@@ -38,9 +38,9 @@ export default class Drop {
     // rörelse i y-led
     this.y_offset = sin(this.animation_swell_angle * 0.5) * 3;
 
-    this.lifelegnth = this.lifelegnth - dt / 1000;
+    this.lifespan = this.lifespan - dt / 1000;
 
-    if (this.lifelegnth <= 0) {
+    if (this.lifespan <= 0) {
       this.remove = true;
     }
 
