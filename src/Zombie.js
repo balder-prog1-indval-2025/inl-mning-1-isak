@@ -41,6 +41,7 @@ export default class Zombie extends Entity {
 
     this.dead = this.hp <= 0;
     this.x_vel = lerp(this.x_vel, this.dir * this.x_movement_speed * dT, 0.1);
+    // linjär interpolation av x-hastigheten
 
     this.x += this.x_vel;
     this.hitbox.moveTo(this.x, this.y);
