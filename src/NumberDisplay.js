@@ -1,3 +1,4 @@
+// en klass som visar ett nummer med en ikon bredvid, ex för poäng eller ammo
 export default class NumberDisplay {
   constructor(x, y, size = 30, color = "white", img) {
     this.x = x;

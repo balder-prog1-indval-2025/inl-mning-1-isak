@@ -1,3 +1,4 @@
+// magasinklass som håller koll på ammunition, samt ritar ut magasinet på skärmen
 export default class Magazine {
   constructor(rx, y, capacity, bullet_image, empty_image) {
     this.y = y;

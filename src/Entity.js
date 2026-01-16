@@ -1,5 +1,6 @@
 import HitBox from "./Box";
 
+// föräldraklass till zombie och player. Innehåller grundläggande rörelse, färg och ritfunktioner
 export default class Entity {
   constructor(x, y, w, h, sprite = null) {
     this.x = x;

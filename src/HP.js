@@ -1,3 +1,4 @@
+// utritning av hp
 export default class HP {
   constructor(x, y, size, alive_img, dead_img) {
     this.x = x;

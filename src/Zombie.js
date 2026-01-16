@@ -11,6 +11,7 @@ export default class Zombie extends Entity {
     this.zombie_images = zombie_images;
   }
   update(dT, bullets) {
+    // kollar om zombien är i spawnläge. om den är det kan den inte bli skjuten av spelaren
     if (this.spawning) {
       this.x_vel = this.dir * this.x_movement_speed * dT;
       this.x += this.x_vel;
@@ -21,6 +22,7 @@ export default class Zombie extends Entity {
       }
       return;
     }
+    // vänd om den når skärmens kanter
     if (this.x > width - this.w) {
       this.dir = -this.dir;
       this.x = width - this.w;
@@ -29,6 +31,7 @@ export default class Zombie extends Entity {
       this.dir = -this.dir;
       this.x = 0;
     }
+    // kolla kollision med kulor
     for (let bullet of bullets) {
       if (this.hitbox.intersectsWith(bullet.hitbox)) {
         this.hp--;
@@ -44,6 +47,7 @@ export default class Zombie extends Entity {
   }
 
   draw() {
+    // animation på sammma sätt som för spelaren. vänd bilden om den rör sig åt vänster
     const frameIndex = Math.floor(frameCount / 3) % this.zombie_images.length;
     const imgWidth = this.w * 2.3;
     const imgHeight =

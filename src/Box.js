@@ -12,6 +12,11 @@ export default class HitBox {
     this.debug_mode = false;
   }
 
+  /**
+   * Flyttar hitboxen
+   * @param {*} x x-koordinat
+   * @param {*} y y-koordinat
+   */
   moveTo(x, y) {
     this.xorg = x;
     this.yorg = y;
@@ -27,6 +32,11 @@ export default class HitBox {
     */
   }
 
+  /**
+   * AABB kollisionsdetektion
+   * @param {*} other_box
+   * @returns true om kolliderar, false annars
+   */
   intersectsWith(other_box) {
     return (
       this.x + this.w > other_box.x &&
@@ -36,6 +46,12 @@ export default class HitBox {
     );
   }
 
+  /**
+   * kollar om en punkt ligger innanfär hitboxen
+   * @param {*} mouse_x
+   * @param {*} mouse_y
+   * @returns
+   */
   pointIntersects(mouse_x, mouse_y) {
     return (
       mouse_x > this.x &&
