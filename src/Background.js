@@ -3,14 +3,6 @@ import m2 from "./moln/m2.png";
 import m3 from "./moln/m3.png";
 import m4 from "./moln/m4.png";
 
-import f1 from "./Houses/Fabrik1.png";
-import f2 from "./Houses/Fabrik2.png";
-import f3 from "./Houses/Fabrik3.png";
-import f4 from "./Houses/Fabrik4.png";
-import f5 from "./Houses/Fabrik5.png";
-
-import burg from "./Houses/Burg.png";
-
 import city from "./Houses/city.png";
 
 import grass from "./Grass/Grass.png";
@@ -21,14 +13,6 @@ export default class Background {
     this.m2 = loadImage(m2);
     this.m3 = loadImage(m3);
     this.m4 = loadImage(m4);
-
-    this.f1 = loadImage(f1);
-    this.f2 = loadImage(f2);
-    this.f3 = loadImage(f3);
-    this.f4 = loadImage(f4);
-    this.f5 = loadImage(f5);
-
-    this.burg = loadImage(burg);
 
     this.city = loadImage(city);
 
@@ -43,8 +27,6 @@ export default class Background {
     this.addCloud();
     this.addCloud();
     this.addCloud();
-
-    this.fabrik_assets = [this.f1, this.f2, this.f3, this.f4, this.f5];
 
     this.stars = [];
     const starCount = 100;
