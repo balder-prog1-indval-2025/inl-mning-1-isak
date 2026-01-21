@@ -4,7 +4,7 @@ Ett 2D zombie-överlevnadsspel byggt med p5.js.
 
 ## Om spelet
 
-Somby är ett sidscrollande överlevnadsspel där du slåss mot vågor av zombies. Överlev så länge som möjligt genom att skjuta zombies, samla hälsa och ammunition, och undvika skada.
+Somby är ett sidscrollande överlevnadsspel där du slåss mot vågor av zombies. Överlev så länge som möjligt genom att skjuta zombies, samla hp och ammunition, och undvika skada.
 
 ## Hur man spelar
 
@@ -22,7 +22,7 @@ Somby är ett sidscrollande överlevnadsspel där du slåss mot vågor av zombie
 
 - Zombies spawnar från båda sidor av skärmen och går mot dig
 - Skjut zombies innan de når dig - kontakt med zombies ger skada
-- Dödade zombies har 1/3 chans att droppa antingen hälsa eller ammunition
+- Dödade zombies har 1/3 chans att droppa antingen hp eller ammunition
 - Spawnhastigheten ökar över tid, vilket gör spelet svårare
 - Spelet slutar när din HP når 0
 
