@@ -8,30 +8,41 @@ import city from "./Houses/city.png";
 import grass from "./Grass/Grass.png";
 
 export default class Background {
+  #m1;
+  #m2;
+  #m3;
+  #m4;
+
+  #city;
+  #grass;
+  #clouds;
+  #cloud_assets;
+  #stars;
+
   constructor() {
-    this.m1 = loadImage(m1);
-    this.m2 = loadImage(m2);
-    this.m3 = loadImage(m3);
-    this.m4 = loadImage(m4);
+    this.#m1 = loadImage(m1);
+    this.#m2 = loadImage(m2);
+    this.#m3 = loadImage(m3);
+    this.#m4 = loadImage(m4);
 
-    this.city = loadImage(city);
+    this.#city = loadImage(city);
+    this.#grass = loadImage(grass);
 
-    this.grass = loadImage(grass);
+    this.#cloud_assets = [this.#m1, this.#m2, this.#m3, this.#m4];
+    this.#clouds = [];
+    this.#addCloud();
+    this.#addCloud();
+    this.#addCloud();
+    this.#addCloud();
+    this.#addCloud();
+    this.#addCloud();
+    this.#addCloud();
 
-    this.cloud_assets = [this.m1, this.m2, this.m3, this.m4];
-    this.clouds = [];
-    this.addCloud();
-    this.addCloud();
-    this.addCloud();
-    this.addCloud();
-    this.addCloud();
-    this.addCloud();
-    this.addCloud();
-
-    this.stars = [];
+    this.#stars = [];
     const starCount = 100;
+
     for (let i = 0; i < starCount; i++) {
-      this.stars.push({
+      this.#stars.push({
         x: random(0, width),
         y: random(0, height),
         size: random(1, 3),
@@ -40,11 +51,11 @@ export default class Background {
     }
   }
 
-  addCloud() {
+  #addCloud() {
     let dir = round(random(0, 1)) * 2 - 1;
 
-    this.clouds.push({
-      img: random(this.cloud_assets),
+    this.#clouds.push({
+      img: random(this.#cloud_assets),
       x: random(-500, width + 500),
       y: random(-20, 150),
       w: random(80, 150),
@@ -53,7 +64,7 @@ export default class Background {
     });
   }
 
-  sunset() {
+  #sunset() {
     drawingContext.save();
     const gradient = drawingContext.createLinearGradient(
       width / 2,
@@ -80,10 +91,10 @@ export default class Background {
   }
 
   draw(dT) {
-    this.sunset();
+    this.#sunset();
     // Draw stars
     noStroke();
-    for (let star of this.stars) {
+    for (let star of this.#stars) {
       star.alpha += random(-20, 20);
       star.alpha = constrain(star.alpha, 50, 255);
       fill(255, 255, 255, star.alpha);
@@ -91,7 +102,7 @@ export default class Background {
     }
 
     noStroke();
-    for (let cloud of this.clouds) {
+    for (let cloud of this.#clouds) {
       if (cloud.dir == 1 && cloud.x > width + 100) {
         cloud.dir = -1;
       } else if (cloud.dir == -1 && cloud.x < -cloud.w - 100) {
@@ -109,11 +120,10 @@ export default class Background {
     }
 
     const imgWidth = width;
-    const imgHeight = this.city.height * (imgWidth / this.city.width);
-    const grassHeight = this.grass.height * (imgWidth / this.grass.width);
+    const imgHeight = this.#city.height * (imgWidth / this.#city.width);
+    const grassHeight = this.#grass.height * (imgWidth / this.#grass.width);
 
-    image(this.city, 0, 100, width, imgHeight);
-
-    image(this.grass, 0, 370, width, grassHeight);
+    image(this.#city, 0, 100, width, imgHeight);
+    image(this.#grass, 0, 370, width, grassHeight);
   }
 }
