@@ -40,8 +40,8 @@ export default class Drop {
       this.#size + sin(this.#animation_swell_angle) * (this.#size * 0.1);
 
     // ta reda på koordinater för mitten av grejen
-    let middle_x = this.x + this.size / 2;
-    let middle_y = this.y + this.size / 2;
+    let middle_x = this.#x + this.#size / 2;
+    let middle_y = this.#y + this.#size / 2;
 
     // rörelse i y-led
     let y_offset = sin(this.#animation_swell_angle * 0.5) * 3;
