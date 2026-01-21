@@ -9,6 +9,13 @@ import idle_frame from "./player/idle.png";
 import Entity from "./Entity";
 
 export default class Player extends Entity {
+  #jump_power;
+  #target_x_vel;
+  #hit;
+  #hitCooldown;
+  #frames;
+  #idle;
+
   /**
    * Initialiserar spelare
    * @param {*} x ursprunglig x position
@@ -19,24 +26,23 @@ export default class Player extends Entity {
    */
   constructor(x, y, w, h, sprite = null) {
     super(x, y, w, h, sprite);
-    this.jump_power = 0.67;
-    this.target_x_vel = 0;
+    this.#jump_power = 0.67;
+    this.#target_x_vel = 0;
     this.hp = 10;
     this.game_over = false;
-    this.hit = false;
-    this.hitCooldown = 0;
+    this.#hit = false;
+    this.#hitCooldown = 0;
 
     // ladda in alla bilder för spelarens animation och lagra i en array
-    this.p1 = loadImage(p1);
-    this.p2 = loadImage(p2);
-    this.p3 = loadImage(p3);
-    this.p4 = loadImage(p4);
-    this.p5 = loadImage(p5);
-    this.p6 = loadImage(p6);
+    let tp1 = loadImage(p1);
+    let tp2 = loadImage(p2);
+    let tp3 = loadImage(p3);
+    let tp4 = loadImage(p4);
+    let tp5 = loadImage(p5);
+    let tp6 = loadImage(p6);
 
-    this.frames = [this.p1, this.p2, this.p3, this.p4, this.p5, this.p6];
-
-    this.idle = loadImage(idle_frame);
+    this.#frames = [tp1, tp2, tp3, tp4, tp5, tp6];
+    this.#idle = loadImage(idle_frame);
   }
 
   update(dT, ground, zombies) {
@@ -44,20 +50,20 @@ export default class Player extends Entity {
 
     // rörelse med A och D
     if (keyIsDown(65)) {
-      this.target_x_vel = -this.x_movement_speed;
+      this.#target_x_vel = -this.x_movement_speed;
       if (this.x_vel > 0) this.dir = 1;
       if (this.x_vel < 0) this.dir = -1;
     }
     if (keyIsDown(68)) {
-      this.target_x_vel = this.x_movement_speed;
+      this.#target_x_vel = this.x_movement_speed;
       if (this.x_vel > 0) this.dir = 1;
       if (this.x_vel < 0) this.dir = -1;
     }
     if (!(keyIsDown(65) || keyIsDown(68))) {
-      this.target_x_vel = 0;
+      this.#target_x_vel = 0;
     }
 
-    this.x_vel = lerp(this.x_vel, this.target_x_vel, 0.1);
+    this.x_vel = lerp(this.x_vel, this.#target_x_vel, 0.1);
     if (this.x < 0) {
       this.x_vel = 0;
       this.x = 0;
@@ -79,13 +85,13 @@ export default class Player extends Entity {
       this.grounded = false;
     }
     if (keyIsDown(32) && this.grounded) {
-      this.y_vel = -this.jump_power;
+      this.y_vel = -this.#jump_power;
       this.y = this.ground_y;
       this.grounded = false;
     }
 
     // kolla efter och hantera kollision med zombies
-    this.hit = false;
+    this.#hit = false;
     for (let zombie of zombies) {
       if (zombie.hitbox.intersectsWith(this.hitbox)) {
         // kollisionshantering - flytta isär spelaren och zombien
@@ -102,22 +108,22 @@ export default class Player extends Entity {
           zombie.x -= overlapX / 2;
         }
 
-        this.hit = true;
+        this.#hit = true;
         zombie.dir = -zombie.dir;
       }
     }
 
     // tar hp från spelaren om cooldownen har runnit ut och återställer därefter cooldownen
-    if (this.hit && this.hitCooldown <= 0) {
+    if (this.#hit && this.#hitCooldown <= 0) {
       this.hp--;
       console.log(this.hp);
-      this.hitCooldown = 1000;
+      this.#hitCooldown = 1000;
     }
 
     // hantering av cooldown
-    if (this.hitCooldown > 0) {
-      this.hitCooldown -= dT;
-      if (this.hitCooldown < 0) this.hitCooldown = 0;
+    if (this.#hitCooldown > 0) {
+      this.#hitCooldown -= dT;
+      if (this.#hitCooldown < 0) this.#hitCooldown = 0;
     }
 
     this.game_over = this.hp <= 0;
@@ -130,9 +136,9 @@ export default class Player extends Entity {
    */
   draw() {
     // väljer animationsframe baserat på p5js inbyggda variabel frameCount
-    const frameIndex = Math.floor(frameCount / 5) % this.frames.length;
+    const frameIndex = Math.floor(frameCount / 5) % this.#frames.length;
     const currentFrame =
-      abs(this.x_vel) > 0.1 ? this.frames[frameIndex] : this.idle; // völjer idle-bild om spelaren står stilla, annars frame utifrån frameIndex
+      abs(this.x_vel) > 0.1 ? this.#frames[frameIndex] : this.#idle; // völjer idle-bild om spelaren står stilla, annars frame utifrån frameIndex
 
     //console.log(this.x_vel);
 
