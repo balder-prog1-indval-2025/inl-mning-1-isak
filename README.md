@@ -36,7 +36,7 @@ Somby är ett sidscrollande överlevnadsspel där du slåss mot vågor av zombie
 ## Installation
 
 ```bash
-# Installera beroenden
+# Installera npm packages
 npm install
 
 # Starta utvecklingsserver
@@ -45,8 +45,6 @@ npm run dev
 # Bygg för produktion
 npm run build
 
-# Förhandsgranska produktionsbygge
-npm run preview
 ```
 
 ## Projektstruktur
@@ -55,7 +53,7 @@ npm run preview
 src/
 ├── sketch.js        # Huvudspelloop och setup
 ├── Player.js        # Spelarkaraktär med rörelse och animation
-├── Zombie.js        # Fiendezombies med AI och animation
+├── Zombie.js        # Fiendezombies med animation
 ├── Bullet.js        # Projektillogik
 ├── Entity.js        # Basklass för spelentiteter
 ├── Drop.js          # Samlingsbara föremål (hälsa/ammunition)
