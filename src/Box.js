@@ -1,11 +1,16 @@
 export default class HitBox {
+  #xorg;
+  #yorg;
+  #x_off;
+  #y_off;
+
   constructor(x_origin, y_origin, x_off, y_off, width, height) {
-    this.xorg = x_origin;
-    this.yorg = y_origin;
-    this.x_off = x_off;
-    this.y_off = y_off;
-    this.x = this.xorg + this.x_off;
-    this.y = this.yorg + this.y_off;
+    this.#xorg = x_origin;
+    this.#yorg = y_origin;
+    this.#x_off = x_off;
+    this.#y_off = y_off;
+    this.x = this.#xorg + this.#x_off;
+    this.y = this.#yorg + this.#y_off;
     this.w = width;
     this.h = height;
 
@@ -18,10 +23,10 @@ export default class HitBox {
    * @param {*} y y-koordinat
    */
   moveTo(x, y) {
-    this.xorg = x;
-    this.yorg = y;
-    this.x = this.xorg + this.x_off;
-    this.y = this.yorg + this.y_off;
+    this.#xorg = x;
+    this.#yorg = y;
+    this.x = this.#xorg + this.#x_off;
+    this.y = this.#yorg + this.#y_off;
 
     /*
     noFill();

@@ -1,11 +1,17 @@
 // en klass som visar ett nummer med en ikon bredvid, ex för poäng eller ammo
 export default class NumberDisplay {
+  #x;
+  #y;
+  #size;
+  #color;
+  #img;
+
   constructor(x, y, size = 30, color = "white", img) {
-    this.x = x;
-    this.y = y;
-    this.size = size;
-    this.color = color;
-    this.img = img;
+    this.#x = x;
+    this.#y = y;
+    this.#size = size;
+    this.#color = color;
+    this.#img = img;
     this.value = 0;
   }
 
@@ -25,12 +31,12 @@ export default class NumberDisplay {
   }
 
   draw() {
-    image(this.img, this.x, this.y, this.size, this.size);
-    fill(this.color);
-    textSize(this.size * 0.7);
+    image(this.#img, this.#x, this.#y, this.#size, this.#size);
+    fill(this.#color);
+    textSize(this.#size * 0.7);
     textAlign(LEFT, CENTER);
     textStyle(BOLD);
     textFont(`Courier`);
-    text(this.value, this.x + this.size + 8, this.y + this.size / 2 + 2);
+    text(this.value, this.#x + this.#size + 8, this.#y + this.#size / 2 + 2);
   }
 }

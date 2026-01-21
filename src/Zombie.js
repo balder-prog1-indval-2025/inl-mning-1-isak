@@ -1,6 +1,8 @@
 import Entity from "./Entity";
 
 export default class Zombie extends Entity {
+  #zombie_images;
+
   constructor(x, y, w, h, sprite = null, zombie_images) {
     super(x, y, w, h, sprite);
     this.x_movement_speed = random(0.09, 0.2);
@@ -8,7 +10,7 @@ export default class Zombie extends Entity {
     this.dead = false;
     this.hp = round(random(1, 3));
     this.spawning = true;
-    this.zombie_images = zombie_images;
+    this.#zombie_images = zombie_images;
   }
   update(dT, bullets) {
     // kollar om zombien är i spawnläge. om den är det kan den inte bli skjuten av spelaren
@@ -49,17 +51,17 @@ export default class Zombie extends Entity {
 
   draw() {
     // animation på sammma sätt som för spelaren. vänd bilden om den rör sig åt vänster
-    const frameIndex = Math.floor(frameCount / 3) % this.zombie_images.length;
+    const frameIndex = Math.floor(frameCount / 3) % this.#zombie_images.length;
     const imgWidth = this.w * 2.3;
     const imgHeight =
-      this.zombie_images[frameIndex].height *
-      (imgWidth / this.zombie_images[frameIndex].width);
+      this.#zombie_images[frameIndex].height *
+      (imgWidth / this.#zombie_images[frameIndex].width);
     if (this.x_vel < -this.x_movement_speed * 0.3) {
       push();
       translate(this.x + (this.w * 1.5) / 2, 0);
       scale(-1, 1);
       image(
-        this.zombie_images[frameIndex],
+        this.#zombie_images[frameIndex],
         (-this.w * 1.5) / 2 - 4,
         this.y - 20,
         imgWidth,
@@ -69,7 +71,7 @@ export default class Zombie extends Entity {
       return;
     } else {
       image(
-        this.zombie_images[frameIndex],
+        this.#zombie_images[frameIndex],
         this.x - 18,
         this.y - 20,
         imgWidth,
