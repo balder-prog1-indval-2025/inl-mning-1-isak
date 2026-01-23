@@ -1,36 +1,72 @@
-# balderjs-template
+# Somby
 
-## Run
-`npm install`  
-`npx balderjs`
+Ett 2D zombie-överlevnadsspel byggt med p5.js.
 
-## Inlämning
-I den här uppgiften får du göra valfritt större program. Det finns exempel nedan på några olika spel om du inte har någon egen idé. Diskutera med mig om du är osäker.
+## Om spelet
 
-Det är viktigt att ditt program innehåller if-satser, loopar, arrayer (eller andra datastrukturer) och funktioner. Med fördel använder ni också grafiska funktioner och/eller update-funktionen i balderjs. Då kan ni få lite roligare program än om ni bara använder read och write.
+Somby är ett sidscrollande överlevnadsspel där du slåss mot vågor av zombies. Överlev så länge som möjligt genom att skjuta zombies, samla hp och ammunition, och undvika skada.
 
-Den här är en betygsgrundande uppgift och förutom att lämna in behöver du diskutera med och förklara för mig både under arbetets gång och efter du är klar.
+## Hur man spelar
 
-Jag kommer ge tips och gå igenom hur ni kan planera och strukturera större uppgifter.
+### Kontroller
 
-Om man vill kan man jobba i grupp, 2 eller möjligtvis 3 personer. 
+| Tangent    | Handling   |
+| ---------- | ---------- |
+| A          | Gå vänster |
+| D          | Gå höger   |
+| Mellanslag | Hoppa      |
+| W          | Skjut      |
+| R          | Ladda om   |
 
-## Exempel
+### Spelmekanik
 
-### Grid-spel
-Vissa av er kanske testade grid-spelen när jag skapade dem som fördjupningsuppgifter. Jag lägger en kopia av det här:
+- Zombies spawnar från båda sidor av skärmen och går mot dig
+- Skjut zombies innan de når dig - kontakt med zombies ger skada
+- Dödade zombies har 1/3 chans att droppa antingen hp eller ammunition
+- Spawnhastigheten ökar över tid, vilket gör spelet svårare
+- Spelet slutar när din HP når 0
 
-Använd grid-objektet (exempel finns i BalderJS-API:et) för att skapa något (eller några) av följande spel:
+### Gränssnitt
 
-- [Luffarschack](https://sv.wikipedia.org/wiki/Luffarschack)
-- [Schack](https://sv.wikipedia.org/wiki/Schack)
-- [Röj](https://sv.wikipedia.org/wiki/MS_R%C3%B6j)
-- [Sudoku](https://sv.wikipedia.org/wiki/Sudoku)
-- [Game of Life](https://sv.wikipedia.org/wiki/Game_of_Life)
-- [Tetris](https://sv.wikipedia.org/wiki/Tetris)
+- **Uppe till vänster**: Kill counter (dödskalle-ikon)
+- **Uppe till vänster**: HP (hjärtan)
+- **Uppe till höger**: Ammunitionsräknare och omladdningsbar
+- **Mitten**: Omladdningsikon visas när magasinet är tomt
 
-### Kortspel
-Välj ett valfritt kortspel, t.ex. poker eller blackjack. Du kan börja med att bara skriva ut korten med write, men sikta på att lägga in bilder på kort som spelet kan dela ut.
+## Installation
 
-### Plattformsspel
-Med update-funktionen, hitboxes och sprite som finns i balderjs kan man göra ett plattformsspel. Börja med att göra en karaktär som kan stå "på marken" och sedan hoppa och landa på marken igen.
+```bash
+# Installera npm packages
+npm install
+
+# Starta utvecklingsserver
+npm run dev
+
+# Bygg för produktion
+npm run build
+
+```
+
+## Projektstruktur
+
+```
+src/
+├── sketch.js        # Huvudspelloop och setup
+├── Player.js        # Spelarkaraktär med rörelse och animation
+├── Zombie.js        # Fiendezombies med animation
+├── Bullet.js        # Projektillogik
+├── Entity.js        # Basklass för spelentiteter
+├── Drop.js          # Samlingsbara föremål (hälsa/ammunition)
+├── Background.js    # Parallax-bakgrundsrendering
+├── HP.js            # Hälsomätare UI-komponent
+├── Magazine.js      # Ammunitionsvisning UI-komponent
+├── NumberDisplay.js # Dödräknare UI-komponent
+├── Box.js           # Hitbox-kollisionsdetektering
+├── Block.js         # Mark/plattformsblock
+└── deathScreen.js   # Game over-skärm
+```
+
+## Teknologier
+
+- [p5.js](https://p5js.org/) - Kreativt kodningsbibliotek
+- [Vite](https://vitejs.dev/) - Byggverktyg och utvecklingsserver
