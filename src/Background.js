@@ -30,13 +30,12 @@ export default class Background {
 
     this.#cloud_assets = [this.#m1, this.#m2, this.#m3, this.#m4];
     this.#clouds = [];
-    this.#addCloud();
-    this.#addCloud();
-    this.#addCloud();
-    this.#addCloud();
-    this.#addCloud();
-    this.#addCloud();
-    this.#addCloud();
+
+    const cloud_count = 8;
+
+    for (let i = 0; i < cloud_count; i++) {
+      this.#addCloud();
+    }
 
     this.#stars = [];
     const starCount = 100;
